@@ -1,15 +1,16 @@
-(function () {
+﻿(function () {
 'use strict';
 var D = window.DATA, app = document.getElementById('app');
-var START = '2026-10-25', BLOCK = 45;
+var START = '2026-10-26', BLOCK = 45;
 var DAYN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /* ---------- storage ---------- */
 function load() { try { return JSON.parse(localStorage.getItem('sg:state')) || {}; } catch (e) { return {}; } }
 var S = load();
 S.hours = S.hours || {}; S.wk = S.wk || [3, 3, 4, 4, 4, 4, 3]; S.results = S.results || {}; S.seen = S.seen || {};
-S.mocks = S.mocks || []; S.sheet = S.sheet || {}; S.dayPlan = S.dayPlan || null;
-function save() { try { localStorage.setItem('sg:state', JSON.stringify(S)); } catch (e) {} }
+S.mocks = S.mocks || []; S.sheet = S.sheet || {}; S.dayPlan = S.dayPlan || null; S.cards = S.cards || {};
+function saveLocal() { try { localStorage.setItem('sg:state', JSON.stringify(S)); } catch (e) {} }
+function save() { S.mt = Date.now(); saveLocal(); if (typeof gSchedule === 'function') gSchedule(); }
 
 /* ---------- helpers ---------- */
 function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -23,6 +24,7 @@ function hoursFor(s) { return s in S.hours ? S.hours[s] : S.wk[pd(s).getDay()]; 
 function tkey(c, t) { return c.id + '/' + t.id; }
 function topicOf(c, id) { return c.topics.filter(function (t) { return t.id === id; })[0]; }
 function examWhen(c) { var p = c.exam.date.split('-'), t = c.exam.time.split(':'); return new Date(+p[0], +p[1] - 1, +p[2], +t[0], +t[1]); }
+function fx(s) { return String(s).replace(/_([A-Za-z0-9]+(?:\/[A-Z](?![a-z]))?)/g, '<sub>$1</sub>').replace(/\^\(([^)]*)\)/g, '<sup>$1</sup>'); }
 function el(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
 
 /* ---------- mastery ---------- */
@@ -128,6 +130,8 @@ function viewToday() {
     h += '<div class="blk' + (b.done ? ' done' : '') + '"><input type="checkbox" data-i="' + i + '"' + (b.done ? ' checked' : '') + ' aria-label="done"><div class="grow nm">' + dot(c) + '<a href="' + blockHref(b) + '">' + esc(blockLabel(b)) + '</a><div class="mute">' + c.code + ' &middot; ' + BLOCK + ' min</div></div></div>';
   });
   h += '</div>';
+  var due = D.courses.reduce(function (n, c) { return n + (c.exam.date >= t ? dueCount(c) : 0); }, 0);
+  if (due) h += '<a class="card" href="#/cards"><b>' + due + ' flashcards due</b><div class="mute">A few minutes now saves a lot later.</div></a>';
   h += '<h2>Exams</h2>';
   D.courses.forEach(function (c) {
     var e = c.exam, w = examWhen(c);
@@ -165,7 +169,7 @@ function viewCourse(id) {
   h += '<div class="card"><b>Exam</b><br>' + fmt(e.date) + ', ' + e.time + ' &middot; ' + (e.durMin / 60) + ' h + ' + e.readMin + ' min reading<br><span class="mute">Notes: ' + esc(e.notes) + '<br>Calculator: ' + esc(e.calc) + (e.format ? '<br>' + esc(e.format) : '') + '</span></div>';
   if (c.pending) h += '<div class="box"><b>Content status:</b> ' + esc(c.pending) + '</div>';
   if (c.topics.length) {
-    h += '<div class="row"><a class="btn primary" href="#/mock/' + c.id + '">Mock exam</a>' + (e.notesAllowed ? '<a class="btn" href="#/sheet/' + c.id + '">Build my A4 notes sheet</a>' : '') + '</div>';
+    h += '<div class="row">' + (c.papers.length ? '<a class="btn primary" href="#/mock/' + c.id + '">Mock exam</a>' : '') + (allCards(c).length ? '<a class="btn" href="#/cards/' + c.id + '">Flashcards (' + dueCount(c) + ' due)</a>' : '') + (e.notesAllowed ? '<a class="btn" href="#/sheet/' + c.id + '">Build my A4 notes sheet</a>' : '') + '</div>';
     h += '<h2>Topics, most exam-likely and weakest first</h2>';
     var list = c.topics.slice().sort(function (a, b) { return need(c, b) - need(c, a); });
     list.forEach(function (tp) {
@@ -186,10 +190,67 @@ function viewTopic(cid, tid, tab) {
   if (t.assigned && t.assignedNote) h += '<div class="box">' + esc(t.assignedNote) + '</div>';
   h += '<div class="lesson card">' + t.lesson + '</div>';
   if (t.example) h += '<div class="card"><b>Worked example</b><p>' + t.example.q + '</p><ol>' + t.example.steps.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol></div>';
-  if (t.formulas.length) h += '<div class="card"><b>Key formulas (for your notes sheet)</b><ul>' + t.formulas.map(function (f) { return '<li>' + f + '</li>'; }).join('') + '</ul></div>';
+  if (t.slides && t.slides.length) {
+    h += '<div class="card"><b>From your lecture slides</b><p class="mute">Tap a slide to enlarge. This is the notation your lecturer uses, so copy it in the exam.</p><div class="gal">' + t.slides.map(function (s, i) { return '<figure data-i="' + i + '"><img loading="lazy" src="' + s.src + '" alt="' + esc(s.cap || 'slide') + '"><figcaption>' + esc(s.cap || '') + '</figcaption></figure>'; }).join('') + '</div></div>';
+  }
+  if (t.cards && t.cards.length) h += '<p><a class="btn" href="#/cards/' + cid + '/' + tid + '">Flashcards for this topic (' + t.cards.length + ')</a></p>';
+  if (t.formulas.length) h += '<div class="card"><b>Key formulas (for your notes sheet)</b><ul>' + t.formulas.map(function (f) { return '<li>' + fx(f) + '</li>'; }).join('') + '</ul></div>';
   h += '<p><a class="btn primary" id="gp" href="#/topic/' + cid + '/' + tid + '/practice">I\'ve read it &ndash; start practice</a></p>';
   app.innerHTML = h;
   S.seen[k] = true; save();
+  [].forEach.call(app.querySelectorAll('.gal figure'), function (f) {
+    f.onclick = function () {
+      var s = t.slides[+f.dataset.i], m = el('<div class="modal"><div><img src="' + s.src + '" alt="" style="max-width:100%;height:auto"><p class="mute">' + esc(s.cap || '') + '</p><button class="primary">Close</button></div></div>');
+      document.body.appendChild(m); m.onclick = function () { m.remove(); };
+    };
+  });
+}
+
+/* ---------- flashcards ---------- */
+var BOX_DAYS = [0, 1, 3, 7, 14];
+function allCards(c, tid) {
+  var out = []; c.topics.forEach(function (t) { if (tid && t.id !== tid) return; t.cards.forEach(function (cd) { out.push({ c: c, t: t, cd: cd }); }); }); return out;
+}
+function isDue(id) { var s = S.cards[id]; return !s || s.d <= today(); }
+function dueCount(c) { return allCards(c).filter(function (x) { return isDue(x.cd.id); }).length; }
+function viewCards(cid, tid) {
+  setNav('cards');
+  if (!cid) {
+    var h = '<h1>Flashcards</h1><p class="mute">Only the things you genuinely have to remember. Cards you miss come back sooner. Do a few every day.</p>';
+    D.courses.forEach(function (c) {
+      var n = allCards(c).length;
+      h += '<a class="card" href="#/cards/' + c.id + '"><div class="row sp"><b>' + dot(c) + c.code + '</b><span class="tag">' + (n ? dueCount(c) + ' due / ' + n : 'none yet') + '</span></div></a>';
+    });
+    app.innerHTML = h; return;
+  }
+  var c = D.course(cid); if (!c) return viewCards();
+  var cards = allCards(c, tid);
+  if (!cards.length) { app.innerHTML = '<p><a href="#/cards">&larr; Flashcards</a></p><div class="card">No cards for ' + c.code + ' yet.</div>'; return; }
+  if (!tid) {
+    var h2 = '<p><a href="#/cards">&larr; Flashcards</a></p><h1>' + dot(c) + c.code + '</h1><p><a class="btn primary" href="#/cards/' + cid + '/all">Review everything due (' + dueCount(c) + ')</a></p><h2>By topic</h2>';
+    c.topics.forEach(function (t) { if (t.cards.length) h2 += '<a class="card" href="#/cards/' + cid + '/' + t.id + '"><div class="row sp"><span>' + esc(t.name) + '</span><span class="tag">' + t.cards.filter(function (x) { return isDue(x.id); }).length + ' due / ' + t.cards.length + '</span></div></a>'; });
+    app.innerHTML = h2; return;
+  }
+  var pool = (tid === 'all' ? allCards(c) : cards);
+  var queue = pool.filter(function (x) { return isDue(x.cd.id); }).slice(0, 25);
+  if (!queue.length) queue = pool.slice().sort(function (a, b) { return ((S.cards[a.cd.id] || {}).d || '') < ((S.cards[b.cd.id] || {}).d || '') ? -1 : 1; }).slice(0, 10);
+  var total = queue.length, done = 0;
+  function show() {
+    if (!queue.length) { app.innerHTML = '<div class="card"><h2>Done</h2><p>' + total + ' cards reviewed. Missed ones will be back soon.</p><a class="btn primary" href="#/cards/' + cid + '">Back</a></div>'; return; }
+    var x = queue[0];
+    app.innerHTML = '<p class="mute row sp"><a href="#/cards/' + cid + '">&larr; Back</a><span>' + done + ' / ' + total + '</span></p><div class="fc" id="fc"><div class="mute">' + esc(x.t.name) + '</div><div class="fcq">' + x.cd.f + '</div><div id="bk" hidden class="fcb">' + x.cd.b + '</div></div><div class="row" style="margin-top:12px"><button class="primary grow" id="fl">Show answer</button></div><div class="row" id="rt" hidden style="margin-top:12px"><button class="grow" data-r="0">Missed</button><button class="grow" data-r="1">Almost</button><button class="grow primary" data-r="2">Knew it</button></div>';
+    app.querySelector('#fl').onclick = function () { app.querySelector('#bk').hidden = false; app.querySelector('#rt').hidden = false; this.hidden = true; };
+    [].forEach.call(app.querySelectorAll('[data-r]'), function (b) {
+      b.onclick = function () {
+        var r = +b.dataset.r, st = S.cards[x.cd.id] || { b: 0 };
+        st.b = r === 2 ? Math.min(4, st.b + 1) : (r === 1 ? st.b : 0);
+        st.d = addDays(today(), r === 0 ? 0 : BOX_DAYS[st.b]); st.u = Date.now(); S.cards[x.cd.id] = st; save();
+        queue.shift(); if (r === 0) queue.push(x); else if (r === 1 && st.b === 0) queue.push(x); else done++;
+        show();
+      };
+    });
+  }
+  show();
 }
 
 function showTTable(c) {
@@ -326,12 +387,12 @@ function viewSheet(cid) {
   var h = '<p class="noprint"><a href="#/course/' + cid + '">&larr; ' + c.code + '</a></p><h1 class="noprint">Notes sheet: ' + c.code + '</h1><p class="mute noprint">Allowed: ' + esc(c.exam.notes) + '. Use this as a guide, then <b>copy it by hand</b> if handwriting is required. Writing it out also helps it stick.</p><div class="card noprint">';
   sorted.forEach(function (t) {
     h += '<b>' + esc(t.name) + '</b>';
-    t.formulas.forEach(function (f, n) { var key = t.id + n; h += '<label style="display:block"><input type="checkbox" data-k="' + key + '"' + (sel.off[key] ? '' : ' checked') + '> ' + f + '</label>'; });
+    t.formulas.forEach(function (f, n) { var key = t.id + n; h += '<label style="display:block"><input type="checkbox" data-k="' + key + '"' + (sel.off[key] ? '' : ' checked') + '> ' + fx(f) + '</label>'; });
   });
   h += '<p><b>Your own extra notes</b></p><textarea id="ex" rows="4">' + esc(sel.extra) + '</textarea></div><div class="row sp noprint"><span class="mute" id="fit"></span><button class="primary" id="pr">Print / save as PDF</button></div><div class="a4" id="sheet"></div>';
   app.innerHTML = h;
   function draw() {
-    var out = ''; sorted.forEach(function (t) { var rows = t.formulas.filter(function (f, n) { return !sel.off[t.id + n]; }); if (rows.length) out += '<div><b>' + esc(t.name) + '</b><br>' + rows.join('<br>') + '</div>'; });
+    var out = ''; sorted.forEach(function (t) { var rows = t.formulas.filter(function (f, n) { return !sel.off[t.id + n]; }); if (rows.length) out += '<div><b>' + esc(t.name) + '</b><br>' + rows.map(fx).join('<br>') + '</div>'; });
     if (sel.extra) out += '<div>' + esc(sel.extra).replace(/\n/g, '<br>') + '</div>';
     var s = document.getElementById('sheet'); s.innerHTML = out;
     document.getElementById('fit').textContent = s.scrollWidth > s.clientWidth + 2 || s.scrollHeight > s.clientHeight + 2 ? 'Too much for one A4 side. Untick something.' : 'Fits on one side.';
@@ -342,11 +403,72 @@ function viewSheet(cid) {
   draw();
 }
 
+/* ---------- optional Google Drive sync (hidden app-data file, only this app can see it) ---------- */
+var GS = { id: '', tok: null, exp: 0, fid: null, on: false, msg: '' }, gTimer = null;
+try { GS.id = localStorage.getItem('sg:gcid') || ''; GS.on = localStorage.getItem('sg:gon') === '1'; } catch (e) {}
+function gLoadLib(cb) {
+  if (window.google && google.accounts) return cb();
+  var s = document.createElement('script'); s.src = 'https://accounts.google.com/gsi/client'; s.onload = cb; s.onerror = function () { GS.msg = 'Could not load Google sign-in (offline?)'; gStatus(); };
+  document.head.appendChild(s);
+}
+function gStatus() { var m = document.getElementById('gmsg'); if (m) m.textContent = GS.msg; }
+function gToken(interactive, cb) {
+  gLoadLib(function () {
+    var tc = google.accounts.oauth2.initTokenClient({
+      client_id: GS.id, scope: 'https://www.googleapis.com/auth/drive.appdata',
+      callback: function (r) { if (r.access_token) { GS.tok = r.access_token; GS.exp = Date.now() + (r.expires_in - 60) * 1000; cb(true); } else cb(false); },
+      error_callback: function () { cb(false); }
+    });
+    tc.requestAccessToken({ prompt: interactive ? 'consent' : '' });
+  });
+}
+function gApi(path, opt) {
+  opt = opt || {}; opt.headers = Object.assign({ Authorization: 'Bearer ' + GS.tok }, opt.headers || {});
+  return fetch(path, opt).then(function (r) { if (!r.ok) throw new Error('Drive ' + r.status); return r; });
+}
+function gFind() {
+  if (GS.fid) return Promise.resolve(GS.fid);
+  return gApi("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=" + encodeURIComponent("name='study-progress.json'") + "&fields=files(id)").then(function (r) { return r.json(); }).then(function (j) { GS.fid = j.files && j.files[0] ? j.files[0].id : null; return GS.fid; });
+}
+function gMerge(a, b) {
+  if (!b) return a;
+  var m = JSON.parse(JSON.stringify((a.mt || 0) >= (b.mt || 0) ? a : b)); // settings (hours, notes sheet) come from whichever device changed last
+  m.results = {}; [a, b].forEach(function (x) { Object.keys(x.results || {}).forEach(function (k) { var seen = {}; m.results[k] = (m.results[k] || []).concat(x.results[k]).filter(function (r) { var id = r.q + '|' + r.t; if (seen[id]) return false; seen[id] = 1; return true; }).sort(function (p, q) { return p.t - q.t; }); }); });
+  m.seen = Object.assign({}, a.seen || {}, b.seen || {});
+  m.cards = {}; [a, b].forEach(function (x) { Object.keys(x.cards || {}).forEach(function (k) { var c = x.cards[k]; if (!m.cards[k] || (c.u || 0) > (m.cards[k].u || 0)) m.cards[k] = c; }); });
+  var mk = {}; m.mocks = (a.mocks || []).concat(b.mocks || []).filter(function (x) { if (mk[x.t]) return false; mk[x.t] = 1; return true; }).sort(function (p, q) { return p.t - q.t; });
+  m.dayPlan = a.dayPlan; m.mt = Math.max(a.mt || 0, b.mt || 0);
+  return m;
+}
+function gPush() {
+  if (!GS.on || !GS.tok || Date.now() > GS.exp) return;
+  var body = JSON.stringify(S);
+  gFind().then(function (fid) {
+    if (fid) return gApi('https://www.googleapis.com/upload/drive/v3/files/' + fid + '?uploadType=media', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: body });
+    var b = '----sg', meta = JSON.stringify({ name: 'study-progress.json', parents: ['appDataFolder'] });
+    return gApi('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', { method: 'POST', headers: { 'Content-Type': 'multipart/related; boundary=' + b }, body: '--' + b + '\r\nContent-Type: application/json\r\n\r\n' + meta + '\r\n--' + b + '\r\nContent-Type: application/json\r\n\r\n' + body + '\r\n--' + b + '--' }).then(function (r) { return r.json(); }).then(function (j) { GS.fid = j.id; });
+  }).then(function () { GS.msg = 'Synced ' + new Date().toLocaleTimeString(); gStatus(); }).catch(function (e) { GS.msg = 'Sync problem: ' + e.message; gStatus(); });
+}
+function gSchedule() { if (!GS.on) return; clearTimeout(gTimer); gTimer = setTimeout(gPush, 4000); }
+function gSync(interactive, done) {
+  if (!GS.id) { GS.msg = 'Paste your Google Client ID first.'; gStatus(); return; }
+  gToken(interactive, function (ok) {
+    if (!ok) { GS.msg = interactive ? 'Sign-in was cancelled or blocked.' : 'Tap "Sync now" to reconnect.'; gStatus(); return; }
+    GS.on = true; try { localStorage.setItem('sg:gon', '1'); } catch (e) {}
+    gFind().then(function (fid) { return fid ? gApi('https://www.googleapis.com/drive/v3/files/' + fid + '?alt=media').then(function (r) { return r.json(); }) : null; })
+      .then(function (remote) { S = gMerge(S, remote); S.hours = S.hours || {}; saveLocal(); gPush(); if (done) done(); var h = location.hash; if (h === '' || h === '#/' || h === '#/cards') route(); })
+      .catch(function (e) { GS.msg = 'Sync problem: ' + e.message; gStatus(); });
+  });
+}
+if (GS.on && GS.id) setTimeout(function () { gSync(false); }, 800);
+
 /* ---------- backup ---------- */
 function viewBackup() {
   setNav('backup');
-  app.innerHTML = '<h1>Backup</h1><p class="mute">Your progress is saved in this browser only. Export to move it to another device (e.g. laptop to phone).</p><div class="card"><button class="primary" id="ex">Copy my progress</button><p class="mute">Then on the other device, paste it below.</p><textarea id="im" rows="4" placeholder="Paste progress here"></textarea><p><button id="go">Import</button> <button id="rs">Reset everything</button></p><div id="msg" class="mute"></div></div>';
+  app.innerHTML = '<h1>Backup and sync</h1><div class="card"><b>Automatic sync with your Google Drive</b><p class="mute">Keeps phone and laptop in step. It writes one hidden file that only this app can see in your Drive. One-time setup: see SYNC-SETUP.md in the App folder.</p><input type="text" id="gid" placeholder="Paste Google Client ID here" value="' + esc(GS.id) + '"><div class="row" style="margin-top:8px"><button class="primary" id="gcon">Connect and sync</button><button id="gnow">Sync now</button></div><div id="gmsg" class="mute">' + esc(GS.msg || (GS.on ? 'Sync is on.' : 'Not connected.')) + '</div></div><div class="card"><b>Manual backup</b><p class="mute">Progress is stored in this browser. Copy it here to move it by hand.</p><button class="primary" id="ex">Copy my progress</button><p class="mute">Then on the other device, paste it below.</p><textarea id="im" rows="4" placeholder="Paste progress here"></textarea><p><button id="go">Import</button> <button id="rs">Reset everything</button></p><div id="msg" class="mute"></div></div>';
   var msg = app.querySelector('#msg');
+  app.querySelector('#gcon').onclick = function () { GS.id = app.querySelector('#gid').value.trim(); try { localStorage.setItem('sg:gcid', GS.id); } catch (e) {} GS.fid = null; gSync(true); };
+  app.querySelector('#gnow').onclick = function () { GS.id = app.querySelector('#gid').value.trim() || GS.id; gSync(true); };
   app.querySelector('#ex').onclick = function () { var v = JSON.stringify(S); app.querySelector('#im').value = v; try { navigator.clipboard.writeText(v); msg.textContent = 'Copied.'; } catch (e) { msg.textContent = 'Select the text in the box and copy it.'; } };
   app.querySelector('#go').onclick = function () { try { S = JSON.parse(app.querySelector('#im').value); save(); msg.textContent = 'Imported. Reloading…'; location.hash = '#/'; location.reload(); } catch (e) { msg.textContent = 'That did not look like valid progress.'; } };
   app.querySelector('#rs').onclick = function () { if (confirm('Delete all progress?')) { localStorage.removeItem('sg:state'); location.hash = '#/'; location.reload(); } };
@@ -366,6 +488,7 @@ function route() {
       case 'mock': return viewMock(p[1], p[2]);
       case 'sheet': return viewSheet(p[1]);
       case 'backup': return viewBackup();
+      case 'cards': return viewCards(p[1], p[2]);
       default: return viewToday();
     }
   } catch (e) { app.innerHTML = '<div class="card"><b>Something broke.</b><pre>' + esc(e.stack || e) + '</pre><a href="#/">Home</a></div>'; }
@@ -374,3 +497,4 @@ window.addEventListener('hashchange', route);
 route();
 if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) navigator.serviceWorker.register('sw.js').catch(function () {});
 })();
+
