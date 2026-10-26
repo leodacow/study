@@ -4,6 +4,7 @@ var S10 = function (n, cap) { return { src: 'img/m2210/' + n + '.jpg', cap: cap 
 DATA.addTopics('MECH2210', [
   /* ------------------------------------------------------------ */
   { id: 'rect', name: 'Straight-line motion (rectilinear kinematics)', freq: 0.35, freqNote: 'Week 1. Used inside almost every later question.', assigned: false,
+    notation: [['s', 'position (displacement) along the line'], ['v', 'velocity, ds/dt'], ['a', 'acceleration, dv/dt'], ['t', 'time'], ['s₀, v₀', 'position and velocity at t = 0 (initial conditions)'], ['C, C₂', 'constants of integration, found from initial conditions']],
     lesson:
 `<p>Kinematics describes motion without asking what causes it. For a particle on a straight line, position <b>s</b>, velocity <b>v</b> and acceleration <b>a</b> are linked by calculus:</p>
 <ul><li>v = ds/dt &nbsp;&nbsp; a = dv/dt</li><li><b>a ds = v dv</b> (this removes time, and is the key when a depends on position)</li></ul>
@@ -17,7 +18,7 @@ DATA.addTopics('MECH2210', [
 <tr><td>a(s)</td><td>v dv = a(s) ds, integrate for v(s)</td></tr></table>
 <p><b>Common mistakes:</b> mixing up the sign of a (choose a positive direction and stick to it), using SUVAT when a is not constant, forgetting initial conditions.</p>`,
     example: { q: 'A particle starts from rest at s = 0 with a = 4t (m/s²). Find v and s at t = 3 s.',
-      steps: ['v = ∫a dt = 2t² + C. v(0) = 0 so C = 0 and v = 2t².', 's = ∫v dt = (2/3)t³ + C₂, and s(0) = 0 so s = (2/3)t³.', 'At t = 3: v = 18 m/s and s = 18 m.'] },
+      steps: ['v = ∫a dt = ∫4t dt = 2t² + C. v(0) = 0 so C = 0 and v = 2t².', 's = ∫v dt = ∫2t² dt = (2/3)t³ + C₂, and s(0) = 0 so s = (2/3)t³.', 'At t = 3: v = 18 m/s and s = 18 m.'] },
     slides: [S10('L2_Rect-05', 'L2: straight-line motion'), S10('L2_Rect-19', 'L2: formula map (which equation to use)')],
     formulas: ['v = ds/dt, a = dv/dt, a ds = v dv', 'Constant a: v = v₀ + at; s = s₀ + v₀t + ½at²; v² = v₀² + 2a(s − s₀)'],
     cards: [
@@ -36,6 +37,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'curv', name: 'Curved-path motion (projectiles, n-t and polar)', freq: 0.35, freqNote: 'Weeks 1-2', assigned: false,
+    notation: [['x, y', 'horizontal and vertical Cartesian coordinates'], ['θ', 'launch angle (projectile) or angular position (polar)'], ['g', 'acceleration due to gravity, 9.81 m/s²'], ['a_t', 'tangential acceleration (along the path, changes speed)'], ['a_n', 'normal acceleration (towards the centre of curvature, v²/ρ)'], ['ρ ("rho")', 'radius of curvature of the path'], ['r', 'radial distance from the origin (polar coordinates)'], ['ṙ, r̈', 'first and second time-derivatives of r (speed and acceleration along the radius)'], ['θ̇, θ̈', 'angular velocity and angular acceleration'], ['v_r, v_θ', 'radial and transverse (tangential) velocity components'], ['a_r, a_θ', 'radial and transverse acceleration components']],
     lesson:
 `<p>Pick the coordinate system that makes the problem easy.</p>
 <h4>Cartesian: projectiles</h4>
@@ -48,7 +50,7 @@ DATA.addTopics('MECH2210', [
 <li>a<sub>r</sub> = r̈ − r θ̇², &nbsp; a<sub>θ</sub> = r θ̈ + 2 ṙ θ̇</li></ul>
 <p>Even if r is constant, a<sub>r</sub> = −rθ̇² is not zero (centripetal).</p>`,
     example: { q: 'A ball is thrown at 20 m/s at 30° above level ground. Find time of flight, range and max height (g = 9.81).',
-      steps: ['v₀sinθ = 10 m/s, v₀cosθ = 17.32 m/s.', 'Time of flight = 2(10)/9.81 = 2.04 s.', 'Range = 17.32 × 2.04 = 35.3 m.', 'Max height = 10²/(2 × 9.81) = 5.10 m.'] },
+      steps: ['v₀sinθ = 10 m/s, v₀cosθ = 17.32 m/s.', 'Time of flight = 2v₀sinθ/g = 2(10)/9.81 = 2.04 s.', 'Range = v₀cosθ × (time of flight) = 17.32 × 2.04 = 35.3 m.', 'Max height = (v₀sinθ)²/(2g) = 10²/(2 × 9.81) = 5.10 m.'] },
     slides: [S10('L3_Curv-04', 'L3: Cartesian coordinates'), S10('L3_Curv-07', 'L3: projectile motion'), S10('L4_Curv-04', 'L4: path-based (n-t) coordinates'), S10('L4_Curv-10', 'L4: polar coordinates')],
     formulas: ['Projectile: x = v₀cosθ·t; y = v₀sinθ·t − ½gt²', 'n-t: a_t = dv/dt, a_n = v²/ρ', 'Polar: v_r = ṙ, v_θ = rθ̇; a_r = r̈ − rθ̇², a_θ = rθ̈ + 2ṙθ̇'],
     cards: [
@@ -67,6 +69,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'dep', name: 'Dependent and relative motion', freq: 0.35, freqNote: 'Week 2 (pulleys and relative velocity)', assigned: false,
+    notation: [['s_A, s_B, s_P', 'position coordinates of each body/end, measured from a fixed datum'], ['v_A, v_B', 'velocities of bodies A and B (measured from a fixed/ground frame)'], ['v_B/A', '"velocity of B relative to A" — how B appears to someone moving with A'], ['a_A, a_B, a_B/A', 'the acceleration equivalents']],
     lesson:
 `<h4>Dependent motion (pulleys and cords)</h4>
 <ol><li>Pick a coordinate for each moving object, measured from a fixed datum.</li><li>Write the <b>total cord length</b> as a sum of these coordinates plus constants.</li><li>Differentiate once for velocity and again for acceleration. Constants vanish.</li></ol>
@@ -74,7 +77,7 @@ DATA.addTopics('MECH2210', [
 <h4>Relative motion</h4>
 <p>v<sub>B</sub> = v<sub>A</sub> + v<sub>B/A</sub> &nbsp;and&nbsp; a<sub>B</sub> = a<sub>A</sub> + a<sub>B/A</sub>, where v<sub>B/A</sub> is "B as seen from A". Draw the vector triangle first. This only works if the frame attached to A is not rotating.</p>`,
     example: { q: 'Car A drives east at 20 m/s and car B drives north at 15 m/s. Find the velocity of B relative to A.',
-      steps: ['v<sub>B/A</sub> = v<sub>B</sub> − v<sub>A</sub> = (0, 15) − (20, 0) = (−20, 15) m/s.', 'Magnitude = √(400 + 225) = 25 m/s, pointing north-west (36.9° above west).'] },
+      steps: ['v<sub>B</sub> = v<sub>A</sub> + v<sub>B/A</sub> → v<sub>B/A</sub> = v<sub>B</sub> − v<sub>A</sub> = (0, 15) − (20, 0) = (−20, 15) m/s.', 'Magnitude = √(400 + 225) = 25 m/s, pointing north-west (36.9° above west).'] },
     slides: [S10('L5_Dep-04', 'L5: dependent motion method'), S10('L5_Dep-06', 'L5: relative motion')],
     formulas: ['Dependent: total cord length constant → differentiate', 'v_B = v_A + v_B/A; a_B = a_A + a_B/A'],
     cards: [
@@ -89,6 +92,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'pkin', name: 'Particle kinetics (F = ma)', freq: 0.5, freqNote: 'Weeks 2-3. Every force question starts here.', assigned: false,
+    notation: [['F (or ΣF)', 'net external force on the body'], ['m', 'mass'], ['a', 'acceleration'], ['N', 'normal (contact) force'], ['μ_s, μ_k', 'coefficient of static and kinetic (sliding) friction'], ['β', 'incline angle'], ['v', 'speed'], ['ρ ("rho")', 'radius of the circular path'], ['FBD / KD', 'free body diagram / kinetic diagram']],
     lesson:
 `<p>Kinetics links forces to motion through Newton's second law: <b>ΣF = m a</b>.</p>
 <h4>Method</h4>
@@ -99,7 +103,7 @@ DATA.addTopics('MECH2210', [
 <p>ΣF<sub>n</sub> = m v²/ρ towards the centre, and ΣF<sub>t</sub> = m dv/dt.</p>
 <p>A block on an incline of angle β sliding down: a = g(sinβ − μ<sub>k</sub>cosβ).</p>`,
     example: { q: 'A 10 kg block slides down a 30° incline with μ<sub>k</sub> = 0.2. Find its acceleration.',
-      steps: ['Perpendicular to slope: N = mg cos30° = 85.0 N, so F = μ<sub>k</sub>N = 17.0 N.', 'Along slope: mg sin30° − F = ma → 49.05 − 17.0 = 10a.', 'a = 3.21 m/s² down the slope.'] },
+      steps: ['Perpendicular to slope: N = mg cos30° = 85.0 N, so friction F = μ<sub>k</sub>N = 17.0 N.', 'Along slope, ΣF = ma: mg sin30° − F = ma → 49.05 − 17.0 = 10a.', 'a = 3.21 m/s² down the slope (matches a = g(sinβ − μ<sub>k</sub>cosβ)).'] },
     slides: [S10('L6_Kin-05', 'L6: FBD and kinetic diagram'), S10('L6_Kin-09', 'L6: Newton in Cartesian coordinates'), S10('L6_Kin-10', 'L6: Newton in n-t coordinates')],
     formulas: ['ΣF = m a (draw FBD and kinetic diagram)', 'Friction: F ≤ μ_s N (static), F = μ_k N (slipping)', 'n-t: ΣF_n = m v²/ρ, ΣF_t = m dv/dt'],
     cards: [
@@ -118,6 +122,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'pwe', name: 'Work and energy (particles)', freq: 0.5, freqNote: 'Weeks 3-4', assigned: false,
+    notation: [['T', 'kinetic energy, ½mv²'], ['U (or ΣU₁₋₂)', 'work done by a force (from state 1 to state 2)'], ['V', 'potential energy, mgh + ½kx²'], ['F', 'a force'], ['d', 'distance moved in the direction of F'], ['h', 'height'], ['k', 'spring stiffness'], ['x', 'spring stretch/compression from its unstretched length'], ['P', 'power, F·v']],
     lesson:
 `<p>Work-energy is a shortcut when you want <b>speed</b> after a <b>distance</b> (no time needed). Energy is a scalar, so no direction bookkeeping.</p>
 <h4>Principle</h4>
@@ -130,7 +135,7 @@ DATA.addTopics('MECH2210', [
 <p>P = F·v. Efficiency = power out / power in.</p>
 <p><b>Use work-energy when you need speed, height, distance or spring compression. Use F = ma when you need acceleration, force or time.</b></p>`,
     example: { q: 'A 2 kg block slides from rest down a smooth ramp 3 m high onto a spring k = 2000 N/m. Find the maximum spring compression.',
-      steps: ['Energy: m g h = ½ k x² (ignore the tiny extra height during compression).', 'x = √(2mgh/k) = √(2 × 2 × 9.81 × 3 / 2000) = √0.05886 = 0.243 m.'] },
+      steps: ['Conservation of energy T₁ + V₁ = T₂ + V₂: m g h = ½ k x² (ignore the tiny extra height during compression).', 'x = √(2mgh/k) = √(2 × 2 × 9.81 × 3 / 2000) = √0.05886 = 0.243 m.'] },
     slides: [S10('L7_WE-08', 'L7: principle of work and energy'), S10('L8_WE-05', 'L8: conservative forces'), ],
     formulas: ['T₁ + ΣU = T₂, T = ½mv²', 'Gravity: U = −mgΔh; spring: U = −½k(x₂² − x₁²)', 'Conservative: T₁ + V₁ = T₂ + V₂', 'Power P = F·v'],
     cards: [
@@ -149,6 +154,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'pimp', name: 'Linear impulse, momentum and impact (particles)', freq: 0.6, freqNote: 'Weeks 4-5. Collisions are a favourite exam question.', assigned: false,
+    notation: [['m v', 'linear momentum'], ['∫F dt', 'impulse (area under a force-time graph)'], ['e', 'coefficient of restitution (0 = plastic, 1 = elastic)'], ['v_A1, v_A2', 'velocity of body A before (1) and after (2) impact'], ['dm/dt', 'rate of mass flow (rocket exhaust)'], ['v_rel', 'exhaust velocity relative to the rocket']],
     lesson:
 `<h4>Linear impulse and momentum</h4>
 <p><b>m v₁ + Σ∫F dt = m v₂</b>. The area under a force-time graph is the impulse (N·s). Use it for problems involving <b>force, velocity and time</b>.</p>
@@ -162,7 +168,7 @@ DATA.addTopics('MECH2210', [
 <h4>Changing mass (rockets)</h4>
 <p>Thrust = (dm/dt) × v<sub>rel</sub> (exhaust flow rate times relative exhaust speed).</p>`,
     example: { q: 'A 2 kg ball A at 6 m/s hits a stationary 4 kg ball B, e = 0.5. Find both velocities and the energy lost.',
-      steps: ['Momentum: 12 = 2v<sub>A2</sub> + 4v<sub>B2</sub>.', 'Restitution: v<sub>B2</sub> − v<sub>A2</sub> = 0.5(6 − 0) = 3, so v<sub>B2</sub> = v<sub>A2</sub> + 3.', 'Substitute: 12 = 2v<sub>A2</sub> + 4v<sub>A2</sub> + 12 → v<sub>A2</sub> = 0 and v<sub>B2</sub> = 3 m/s.', 'Energy lost = ½(2)(36) − ½(4)(9) = 36 − 18 = 18 J.'] },
+      steps: ['Momentum m<sub>A</sub>v<sub>A1</sub> + m<sub>B</sub>v<sub>B1</sub> = m<sub>A</sub>v<sub>A2</sub> + m<sub>B</sub>v<sub>B2</sub>: 12 = 2v<sub>A2</sub> + 4v<sub>B2</sub>.', 'Restitution e = (v<sub>B2</sub> − v<sub>A2</sub>)/(v<sub>A1</sub> − v<sub>B1</sub>): v<sub>B2</sub> − v<sub>A2</sub> = 0.5(6 − 0) = 3, so v<sub>B2</sub> = v<sub>A2</sub> + 3.', 'Substitute: 12 = 2v<sub>A2</sub> + 4v<sub>A2</sub> + 12 → v<sub>A2</sub> = 0 and v<sub>B2</sub> = 3 m/s.', 'Energy lost = T₁ − T₂ = ½(2)(36) − ½(4)(9) = 36 − 18 = 18 J.'] },
     slides: [S10('L9_Imp-04', 'L9: linear impulse and momentum'), S10('L10_Imp-05', 'L10: coefficient of restitution'), S10('L10_Imp-07', 'L10: energy loss in impact'), S10('L11_Imp-05', 'L11: oblique impact steps')],
     formulas: ['m v₁ + ΣF dt = m v₂', 'e = (v_B2 − v_A2)/(v_A1 − v_B1)', 'Plastic impact e = 0: bodies move together', 'Oblique: tangential components unchanged, normal obeys momentum + e', 'Thrust = (dm/dt) v_rel'],
     cards: [
@@ -184,12 +190,13 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'pang', name: 'Angular momentum (particles)', freq: 0.4, freqNote: 'Week 5', assigned: false,
+    notation: [['H_O', 'angular momentum of the particle about point O (= r × mv)'], ['r', 'position vector from O to the particle'], ['v', 'velocity of the particle'], ['d', 'perpendicular distance from O to the line of velocity'], ['M_O (or ΣM_O)', 'moment (torque) about O'], ['T', 'kinetic energy']],
     lesson:
 `<p>The angular momentum of a particle about a point O is <b>H<sub>O</sub> = r × m v</b> (units kg·m²/s). In 2D, H<sub>O</sub> = m v d, where d is the perpendicular distance from O to the line of the velocity, and it points in or out of the page.</p>
 <ul><li><b>ΣM<sub>O</sub> = dH<sub>O</sub>/dt</b></li><li>Angular impulse-momentum: (H<sub>O</sub>)₁ + ∫ΣM<sub>O</sub> dt = (H<sub>O</sub>)₂</li><li><b>Conservation:</b> if ΣM<sub>O</sub> = 0 (for example a central force passing through O) then H<sub>O</sub> is constant.</li></ul>
 <p>Classic: a mass on a string through a hole, pulled in: (m v r) stays constant, so smaller radius means faster speed. The tension does work, so kinetic energy is <b>not</b> conserved.</p>`,
     example: { q: 'A 0.5 kg mass on a string through a hole orbits at r = 0.6 m with v = 2 m/s. The string is pulled until r = 0.2 m. Find v and the change in kinetic energy.',
-      steps: ['H conserved: m v₁ r₁ = m v₂ r₂ → v₂ = 2(0.6)/0.2 = 6 m/s.', 'ΔT = ½(0.5)(36 − 4) = 8 J (work done by whoever pulls).'] },
+      steps: ['Angular momentum H conserved (no moment about the hole): m v₁ r₁ = m v₂ r₂ → v₂ = v₁r₁/r₂ = 2(0.6)/0.2 = 6 m/s.', 'ΔT = ½m(v₂² − v₁²) = ½(0.5)(36 − 4) = 8 J (work done by whoever pulls).'] },
     slides: [S10('L12_AM-05', 'L12: angular impulse and momentum'), S10('L12_AM-09', 'L12: conservation of angular momentum')],
     formulas: ['H_O = r × m v (2D: H_O = m v d)', 'ΣM_O = dH_O/dt; if ΣM_O = 0, H_O is constant'],
     cards: [
@@ -205,6 +212,7 @@ DATA.addTopics('MECH2210', [
   /* ------------------------------------------------------------ */
   { id: 'bal', name: 'Balancing rotating machinery', freq: 0.4, freqNote: 'Weeks 5 and 12. Also in Practical 1 pre-work.', assigned: true,
     assignedNote: 'Practical 1 (balancing a shaft) already covers this, so it is a lower priority.',
+    notation: [['m', 'an unbalanced mass'], ['r', 'radius at which the mass sits'], ['ω ("omega")', 'angular (rotational) speed'], ['F', 'the rotating (centrifugal) force produced, F = mrω²'], ['m_b, r_b', 'the balancing mass and its radius'], ['l', 'con-rod length (reciprocating engines)'], ['θ', 'crank angle']],
     lesson:
 `<p>A mass m at radius r on a shaft spinning at ω pulls on the shaft with a rotating (centrifugal) force <b>F = m r ω²</b> pointing at the mass. Balancing means adding or removing mass so that these forces cancel.</p>
 <h4>Single-plane (static) balancing</h4>
@@ -214,7 +222,7 @@ DATA.addTopics('MECH2210', [
 <h4>Reciprocating engines</h4>
 <p>Piston inertia force along the stroke: <b>F = m r ω² (cosθ + (r/l) cos2θ)</b>. The first term is the <i>primary</i> force, the second (smaller, twice engine speed) the <i>secondary</i> force. You cannot fully balance a single cylinder with rotating masses.</p>`,
     example: { q: 'Two masses on one plane: m₁r₁ = 0.3 kg·m at 0° and m₂r₂ = 0.4 kg·m at 90°. Find the balancing mass-radius product and its angle.',
-      steps: ['Sum of vectors: (0.3, 0.4), magnitude √(0.09 + 0.16) = 0.5 kg·m at tan⁻¹(0.4/0.3) = 53.1°.', 'Balancing needs the opposite vector: m<sub>b</sub>r<sub>b</sub> = 0.5 kg·m at 53.1° + 180° = 233.1°.'] },
+      steps: ['Σ m r (vector sum): (0.3, 0.4), magnitude √(0.09 + 0.16) = 0.5 kg·m at tan⁻¹(0.4/0.3) = 53.1°.', 'Balancing needs m<sub>b</sub>r<sub>b</sub> = −Σ m r: 0.5 kg·m at 53.1° + 180° = 233.1°.'] },
     slides: [S10('L13_Bal-04', 'L13: single-plane balancing'), S10('L13_Bal-07', 'L13: two-plane balancing'), S10('MCEbal2-03', 'L32: multi-cylinder engines')],
     formulas: ['Rotating force F = m r ω²', 'Balance: Σ m r (vector) = 0; two-plane also Σ moments = 0', 'Reciprocating: F = m r ω²(cosθ + (r/l)cos2θ)'],
     cards: [

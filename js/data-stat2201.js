@@ -40,6 +40,7 @@ DATA.add({
     /* ---------------------------------------------------------------- 1 */
     { id: 'describe', name: 'Describing data and reading plots', freq: 1, freqNote: 'Q1 of all 3 past papers', assigned: true,
       assignedNote: 'Problem Set Q1 (Unit 1) covers this, so a little less priority.',
+      notation: [['n', 'sample size (number of observations)'], ['ȳ or x̄', 'sample mean'], ['s', 'sample standard deviation'], ['Q1, Q3', 'first and third quartiles (25th and 75th percentile)'], ['IQR', 'interquartile range = Q3 − Q1'], ['r', 'correlation coefficient (−1 to 1, linear association only)']],
       lesson:
 `<p>Every exam question starts with a data set. Before any maths, you need to say what the data looks like.</p>
 <h4>Types of variable</h4>
@@ -61,7 +62,7 @@ DATA.add({
 <h4>Describing a comparison</h4>
 <p>Always give numbers and compare centre, spread, shape and outliers: "Horizontal bars have a higher median (about 710 vs 650 MPa) and a smaller spread."</p>`,
       example: { q: 'Summary of 20 breakdown voltages: min 25.44, Q1 27.26, median 27.885, Q3 28.51, max 29.61. Any outliers?',
-        steps: ['IQR = 28.51 − 27.26 = 1.25.', 'Lower fence = 27.26 − 1.5(1.25) = 25.385. Upper fence = 28.51 + 1.5(1.25) = 30.385.', 'Min 25.44 &gt; 25.385 and max 29.61 &lt; 30.385, so both are inside.', '<b>No outliers.</b> Whiskers run to 25.44 and 29.61.'] },
+        steps: ['IQR = Q3 − Q1 = 28.51 − 27.26 = 1.25.', 'Lower fence = Q1 − 1.5×IQR = 27.26 − 1.5(1.25) = 25.385. Upper fence = Q3 + 1.5×IQR = 28.51 + 1.5(1.25) = 30.385.', 'Min 25.44 &gt; 25.385 and max 29.61 &lt; 30.385, so both are inside.', '<b>No outliers.</b> Whiskers run to 25.44 and 29.61.'] },
       formulas: ['IQR = Q3 − Q1', 'Outlier fences: Q1 − 1.5·IQR and Q3 + 1.5·IQR', 'Box plot cannot show number of modes; r only measures linear association'],
       questions: [
         { type: 'mcq', q: 'Cloud type (clear, liquid_cloud, ice_cloud) is which kind of variable?', opts: ['Categorical', 'Discrete numerical', 'Continuous numerical', 'Binary numerical'], a: 0, why: 'It is a set of labels, not a measurement.' },
@@ -91,6 +92,7 @@ DATA.add({
 
     /* ---------------------------------------------------------------- 2 */
     { id: 'ci', name: 'Confidence and prediction intervals for a mean', freq: 1, freqNote: 'Q1 of all 3 past papers', assigned: false,
+      notation: [['μ', 'true (unknown) population mean — what you are estimating'], ['ȳ or x̄', 'sample mean (your estimate of μ)'], ['s', 'sample standard deviation'], ['n', 'sample size'], ['se', 'standard error = s/√n'], ['df', 'degrees of freedom = n − 1'], ['t*', 'critical value from the t-table (row df, column for your confidence level)'], ['α', 'significance level (e.g. 0.05 for 95% confidence)']],
       lesson:
 `<p>The sample mean ȳ is only an estimate of the true mean μ. A <b>confidence interval (CI)</b> gives a range of believable values for μ.</p>
 <h4>Recipe (copy this every time)</h4>
@@ -109,7 +111,7 @@ DATA.add({
 <ul><li><b>Paired / single-sample difference</b> (e.g. "increase from before to after"): treat the n <i>differences</i> as your data. ȳ and s are the mean and sd of the differences, df = n − 1. Same formula, ȳ<sub>diff</sub> ± t* × s<sub>diff</sub>/√n.</li>
 <li><b>Difference of two means μ₁ − μ₂</b> (independent samples): estimate ȳ₁ − ȳ₂, se = √(s₁²/n₁ + s₂²/n₂), df = min(n₁ − 1, n₂ − 1) — the same se and df as the two-sample t-test.</li></ul>`,
       example: { q: 'n = 20, ȳ = 648, s = 84. 95% CI for the mean.',
-        steps: ['se = 84/√20 = 18.78. df = 19. t* (col 0.975, df 19) = 2.093.', 'Margin = 2.093 × 18.78 = 39.3.', 'CI = 648 ± 39.3 = <b>(608.7, 687.3) MPa</b>.'] },
+        steps: ['se = s/√n = 84/√20 = 18.78. df = n − 1 = 19. t* (col 0.975, df 19) = 2.093.', 'Margin = t* × se = 2.093 × 18.78 = 39.3.', 'CI = ȳ ± margin = 648 ± 39.3 = <b>(608.7, 687.3) MPa</b>.'] },
       formulas: ['CI for mean: ȳ ± t* · s/√n, df = n − 1', '95% CI uses table column 0.975 (90%: 0.95, 99%: 0.995)', 'Prediction interval: ȳ ± t* · s·√(1 + 1/n)'],
       questions: [
         { type: 'mcq', q: 'Which column of the t-table do you use for a 95% confidence interval?', opts: ['0.95', '0.975', '0.99', '0.05'], a: 1, why: 'A 95% CI leaves 2.5% in each tail, so you need the 0.975 quantile.' },
@@ -148,6 +150,7 @@ DATA.add({
 
     /* ---------------------------------------------------------------- 3 */
     { id: 'ttest', name: 'Comparing two means (hypothesis test)', freq: 1, freqNote: 'Biggest Q1 part (5-6 marks) in all 3 past papers', assigned: false,
+      notation: [['H₀', 'null hypothesis (the "no difference" claim)'], ['H₁', 'alternative hypothesis'], ['μ₁, μ₂', 'true means of the two groups'], ['ȳ₁, ȳ₂', 'sample means of the two groups'], ['s₁, s₂', 'sample standard deviations of the two groups'], ['n₁, n₂', 'sample sizes of the two groups'], ['t', 'test statistic'], ['df', 'degrees of freedom = min(n₁ − 1, n₂ − 1)'], ['P (P-value)', 'probability of a result this extreme if H₀ were true']],
       lesson:
 `<p>Question: are two groups really different, or could the gap just be luck of the sample? This is the biggest single mark-earner on the exam, and it is a recipe.</p>
 <h4>The 5-step recipe</h4>
@@ -168,7 +171,7 @@ DATA.add({
 <h4>One-sided tests</h4>
 <p>The question says something directional, e.g. "is greater for the more experienced officers": H₁: μ₁ &gt; μ₂ (not ≠). The P-value is <b>not doubled</b>: bracket t between two table columns directly (watch the sign of t matches the direction in H₁).</p>`,
       example: { q: 'Group A: n=20, ȳ=648, s=84. Group B: n=18, ȳ=713, s=65. Test for a difference.',
-        steps: ['H₀: μ_A = μ_B vs H₁: μ_A ≠ μ_B.', 'se = √(84²/20 + 65²/18) = √(352.8 + 234.5) = 24.24. t = (648 − 713)/24.24 = −2.68.', 'df = min(19, 17) = 17. Row 17: 2.567 (0.99), 2.898 (0.995).', 'One-sided p between 0.005 and 0.01, so two-sided p between 0.01 and 0.02: <b>moderate evidence</b> of a difference.'] },
+        steps: ['H₀: μ_A = μ_B vs H₁: μ_A ≠ μ_B.', 'se = √(s₁²/n₁ + s₂²/n₂) = √(84²/20 + 65²/18) = √(352.8 + 234.5) = 24.24. t = (ȳ₁ − ȳ₂)/se = (648 − 713)/24.24 = −2.68.', 'df = min(n₁ − 1, n₂ − 1) = min(19, 17) = 17. Row 17: 2.567 (0.99), 2.898 (0.995).', 'One-sided p between 0.005 and 0.01, so two-sided p between 0.01 and 0.02: <b>moderate evidence</b> of a difference.'] },
       formulas: ['t = (ȳ₁ − ȳ₂) / √(s₁²/n₁ + s₂²/n₂), df = min(n₁−1, n₂−1)', 'Two-sided p = 2 × one-sided p. Bracket |t| between two table columns', 'p &lt;0.01 strong; 0.01-0.05 moderate; 0.05-0.1 weak; &gt;0.1 inconclusive', 'H₀: μ₁ − μ₂ = 0, H₁: μ₁ − μ₂ ≠ 0'],
       questions: [
         { type: 'mcq', q: 'df = 10 and |t| = 2.3. Which range is the two-sided p-value in?', opts: ['Below 0.01', 'Between 0.02 and 0.05', 'Between 0.05 and 0.1', 'Above 0.1'], a: 1, why: 'Row 10: 2.228 (col 0.975) and 2.764 (col 0.99). 2.3 is between, so one-sided p is between 0.01 and 0.025; doubling gives 0.02 to 0.05.' },
@@ -202,6 +205,7 @@ DATA.add({
 
     /* ---------------------------------------------------------------- 4 */
     { id: 'validity', name: 'Assumptions, experiment design and what can go wrong', freq: 1, freqNote: 'Short-answer marks in all 3 past papers', assigned: false,
+      notation: [['n', 'sample size'], ['CLT', 'Central Limit Theorem'], ['CI', 'confidence interval'], ['PI', 'prediction interval']],
       lesson:
 `<p>These are the easy "explain in a sentence or two" marks, but only if you know the standard answers.</p>
 <h4>Assumptions behind CIs and t-tests</h4>
@@ -251,6 +255,7 @@ DATA.add({
 
     /* ---------------------------------------------------------------- 5 */
     { id: 'regress', name: 'Linear regression: reading the output', freq: 1, freqNote: 'Q2 of all 3 past papers', assigned: false,
+      notation: [['y', 'response (dependent) variable, what you are predicting'], ['x₁, x₂, …', 'explanatory (independent) variables'], ['β₀, β₁, …', 'true (unknown) model coefficients (intercept, slopes)'], ['β̂₀, β̂₁, … or "coef"', 'estimated coefficients from the fitted model'], ['ŷ', 'fitted/predicted value of y'], ['e', 'residual = y − ŷ'], ['std err', 'standard error of a coefficient estimate'], ['t', 'test statistic = coef / std err'], ['P&gt;|t|', 'two-sided p-value testing H₀: that coefficient = 0'], ['R²', 'R-squared, fraction of variation in y explained by the model'], ['n', 'number of observations'], ['p', 'number of explanatory variables'], ['df', 'residual degrees of freedom = n − (p + 1)']],
       lesson:
 `<p>Regression finds the straight-line (or plane) rule that best predicts a response y from explanatory variables x₁, x₂, … The exam gives you Python output and asks you to interpret it. You never run the model.</p>
 <h4>The model</h4>
@@ -268,7 +273,7 @@ DATA.add({
 <h4>Testing a value using the CI</h4>
 <p>To test H₀: β = c: if c lies <b>outside</b> the 95% CI, the p-value is below 0.05. The further outside, the smaller the p-value.</p>`,
       example: { q: 'archard model: logW = 2.1515 + 0.7480 logS + 0.8096 logF (n = 75). Predict logW at logS = 1, logF = 0.5. Observed logW is 3.45; what is the residual?',
-        steps: ['ŷ = 2.1515 + 0.7480(1) + 0.8096(0.5) = 2.1515 + 0.748 + 0.4048 = 3.3043.', 'Residual = 3.45 − 3.3043 = <b>0.1457</b> (the model under-predicted).'] },
+        steps: ['ŷ = β̂₀ + β̂₁logS + β̂₂logF = 2.1515 + 0.7480(1) + 0.8096(0.5) = 2.1515 + 0.748 + 0.4048 = 3.3043.', 'Residual = y − ŷ = 3.45 − 3.3043 = <b>0.1457</b> (the model under-predicted).'] },
       formulas: ['Fitted: ŷ = β̂₀ + β̂₁x₁ + …; residual e = y − ŷ', 'CI for β: β̂ ± t* · se(β̂), df = n − (p+1)', 'Test H₀: β=0 uses t = β̂ / se; the P&gt;|t| column is the 2-sided p', 'Interpretation: holding others fixed, 1 unit increase in x → change of β̂ (units) in expected y'],
       questions: [
         { type: 'mcq', q: 'A regression with 81 observations and 3 explanatory variables has how many residual degrees of freedom?', opts: ['81', '80', '78', '77'], a: 3, why: 'df = n − (p + 1) = 81 − 4 = 77.' },
@@ -326,6 +331,7 @@ DATA.add({
 
     /* ---------------------------------------------------------------- 6 */
     { id: 'diag', name: 'Regression diagnostics (checking assumptions)', freq: 1, freqNote: 'Q2 of all 3 past papers', assigned: false,
+      notation: [['e (residual)', 'y − ŷ, the gap between the actual and fitted value'], ['ŷ (fitted value)', 'what the model predicts for that observation'], ['L-I-N-E', 'Linearity, Independence, Normality, Equal variance — the 4 assumptions'], ['Q-Q plot', 'normal quantile-quantile plot, used to check normality of residuals']],
       lesson:
 `<p>Regression results are only trustworthy if four assumptions hold. Think <b>L-I-N-E</b>:</p>
 <ul><li><b>L</b>inearity: the mean of y really is a straight-line function of the x's.</li>
@@ -374,6 +380,7 @@ DATA.add({
 
     /* ---------------------------------------------------------------- 7 */
     { id: 'predict', name: 'Predictions from a regression', freq: 0.67, freqNote: 'Q2 in 2 of 3 past papers', assigned: false,
+      notation: [['ŷ / "mean"', 'point prediction (fitted value) from the regression equation'], ['mean_ci_lower/upper', 'confidence interval for the average response (CI)'], ['obs_ci_lower/upper', 'prediction interval for one new observation (PI)'], ['mean_se', 'standard error of the mean prediction']],
       lesson:
 `<p>Once you have a fitted equation you can predict y for new x values. Python gives two intervals and the exam asks which one is which and whether it is still valid.</p>
 <h4>Point prediction</h4>
@@ -387,7 +394,7 @@ DATA.add({
 <h4>Warning: extrapolation</h4>
 <p>Predicting for x-values outside the range of your data is unreliable.</p>`,
       example: { q: 'Model: Rt = 26.47 + 40.20 feed − 0.0709 velocity − 6.035 depth. Predict at feed 0.2, velocity 100, depth 0.6.',
-        steps: ['= 26.47 + 40.20(0.2) − 0.0709(100) − 6.035(0.6) = 26.47 + 8.04 − 7.09 − 3.62 = 23.8.'] },
+        steps: ['ŷ = β̂₀ + β̂₁feed + β̂₂velocity + β̂₃depth = 26.47 + 40.20(0.2) − 0.0709(100) − 6.035(0.6) = 26.47 + 8.04 − 7.09 − 3.62 = 23.8.'] },
       formulas: ['Prediction: plug x into fitted equation = "mean" column', 'mean_ci = CI for average response (narrow); obs_ci = PI for one new observation (wider)', 'Non-normal errors: mean_ci OK (large n, CLT), obs_ci invalid'],
       questions: [
         { type: 'mcq', q: 'You want the plausible range for the AVERAGE roughness of ALL parts machined with given settings. Which column pair do you use?', opts: ['mean_ci_lower / upper', 'obs_ci_lower / upper', 'mean_se', 'Either one'], a: 0, why: 'The mean_ci is about the average response. The obs_ci is for a single new part.' },
@@ -412,6 +419,7 @@ DATA.add({
 
     /* ---------------------------------------------------------------- 8 */
     { id: 'estim', name: 'Estimators: bias, variance and MSE', freq: 1, freqNote: 'Q3 of all 3 past papers (the hardest-looking, but a pattern)', assigned: false,
+      notation: [['θ', 'the true (unknown) parameter you are estimating'], ['θ̂ ("theta hat")', 'the estimator — a formula built from the data'], ['E(·)', 'expectation (the average over all possible samples)'], ['bias(θ̂)', 'E(θ̂) − θ'], ['Var(θ̂)', 'variance of the estimator'], ['MSE', 'mean squared error = bias² + Var(θ̂)'], ['c', 'a constant you are often asked to solve for'], ['Xᵢ, Yᵢ, Tᵢ', 'the i-th observation in the random sample']],
       lesson:
 `<p>An <b>estimator</b> is a formula that turns data into a guess for an unknown parameter θ. Since the data are random, the estimate θ̂ is a random variable too. We judge estimators by how close they tend to be to θ.</p>
 <h4>Three quantities</h4>
@@ -483,6 +491,7 @@ DATA.add({
     /* ---------------------------------------------------------------- 9 */
     { id: 'contrv', name: 'Continuous random variables (pdf, CDF, expectation)', freq: 0.33, freqNote: 'Appears inside Q3 estimator questions', assigned: true,
       assignedNote: 'Problem Set Q2 covers pdf/CDF/quantile/expectation, so lower priority.',
+      notation: [['X', 'a continuous random variable'], ['f(x)', 'probability density function (pdf)'], ['F(x)', 'cumulative distribution function (CDF) = P(X ≤ x)'], ['E(X)', 'expectation (mean) of X'], ['Var(X)', 'variance of X'], ['q', 'a quantile (the x-value with P(X ≤ x) = given probability)']],
       lesson:
 `<p>A continuous random variable X is described by its <b>pdf</b> f(x). It never goes negative and the total area under it is 1.</p>
 <ul><li><b>Probability</b>: P(a &lt; X &lt; b) = ∫ₐᵇ f(x) dx.</li>
@@ -492,7 +501,7 @@ DATA.add({
 <li><b>Quantile</b> (the value q with P(X ≤ q) = p): solve F(q) = p for q.</li></ul>
 <p>Tip: P(X &gt; t) = 1 − F(t). Integrals over [0, ∞) of exponentials are the favourite.</p>`,
       example: { q: 'f(x) = 3x² on [0,1]. Find F, E(X) and the median.',
-        steps: ['F(x) = x³ for 0 ≤ x ≤ 1.', 'E(X) = ∫x·3x² dx = 3/4.', 'Median: x³ = 0.5 so x = 0.794.'] },
+        steps: ['F(x) = ∫f(u)du = ∫₀ˣ 3u² du = x³ for 0 ≤ x ≤ 1.', 'E(X) = ∫x f(x) dx = ∫₀¹ x·3x² dx = 3/4.', 'Median: solve F(x) = 0.5 → x³ = 0.5 so x = 0.794.'] },
       formulas: ['F(x) = ∫ f; P(X&gt;t) = 1 − F(t)', 'E g(X) = ∫ g(x) f(x) dx; Var X = E X² − (E X)²', 'Quantile: solve F(q) = p'],
       questions: [
         { type: 'mcq', q: 'To get P(X &gt; 5) from the CDF you compute…', opts: ['F(5)', '1 − F(5)', 'F(5) − 1', 'f(5)'], a: 1, why: 'Upper tail = 1 minus lower tail.' },
@@ -508,6 +517,7 @@ DATA.add({
     /* ---------------------------------------------------------------- 10 */
     { id: 'sums', name: 'Sums of random variables and the CLT', freq: 0.15, freqNote: 'Rarely tested directly, but the rules are used in estimator questions', assigned: true,
       assignedNote: 'Problem Set Q3 covers this, so lower priority.',
+      notation: [['Xᵢ', 'the i-th random variable in a sum or sample'], ['aᵢ', 'a constant multiplying Xᵢ'], ['S', 'a sum of random variables, S = ΣaᵢXᵢ'], ['X̄', 'sample mean'], ['σ', 'population standard deviation'], ['z', 'standardised value, z = (x − mean)/sd'], ['CLT', 'Central Limit Theorem']],
       lesson:
 `<p>These are the rules that make Topic 8 (estimators) work.</p>
 <ul><li>E(Σaᵢ Xᵢ) = Σ aᵢ E(Xᵢ).</li>
@@ -518,7 +528,7 @@ DATA.add({
 <h4>Normal probabilities with the exam table</h4>
 <p>You are given quantiles, not a normal table. The bottom row (∞) is the standard normal: 1.282 (p = 0.90), 1.645 (0.95), 1.960 (0.975), 2.326 (0.99). Standardise z = (x − mean)/sd and locate z between two of these.</p>`,
       example: { q: 'X₁..X₄ independent, each mean 100 and sd 10. S = ΣXᵢ. Find E(S), sd(S) and bound P(S &lt; 370).',
-        steps: ['E(S) = 400. Var(S) = 4(100) = 400 → sd(S) = 20.', 'z = (370 − 400)/20 = −1.5. By symmetry P(S &lt; 370) = P(Z &gt; 1.5).', '1.5 lies between 1.282 (p = 0.90) and 1.645 (p = 0.95), so the probability is between 0.05 and 0.10.'] },
+        steps: ['E(S) = ΣE(Xᵢ) = 4(100) = 400. Var(S) = ΣVar(Xᵢ) = 4(100) = 400 → sd(S) = √Var(S) = 20.', 'z = (x − mean)/sd = (370 − 400)/20 = −1.5. By symmetry P(S &lt; 370) = P(Z &gt; 1.5).', '1.5 lies between 1.282 (p = 0.90) and 1.645 (p = 0.95), so the probability is between 0.05 and 0.10.'] },
       formulas: ['E(Σa X) = Σa E(X); independent: Var(Σa X) = Σa² Var(X)', 'X̄: mean μ, sd σ/√n; CLT for large n', 'Normal quantiles: bottom (∞) row of t-table'],
       questions: [
         { type: 'mcq', q: 'X₁…X₉ are iid with sd 6. What is the sd of X̄?', opts: ['6', '2', '18', '0.67'], a: 1, why: 'σ/√n = 6/3 = 2.' },

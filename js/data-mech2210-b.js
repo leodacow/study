@@ -3,6 +3,7 @@ var S10b = function (n, cap) { return { src: 'img/m2210/' + n + '.jpg', cap: cap
 DATA.addTopics('MECH2210', [
   /* ------------------------------------------------------------ */
   { id: 'rkin', name: 'Rigid body kinematics (rotation, IC, relative motion)', freq: 0.7, freqNote: 'Week 6. Needed in every rigid body problem.', assigned: false,
+    notation: [['θ', 'angular position'], ['ω ("omega")', 'angular velocity, dθ/dt'], ['α ("alpha")', 'angular acceleration, dω/dt'], ['r', 'distance from the rotation axis to the point'], ['v, a_t, a_n', 'speed, tangential and normal acceleration of a point on the body'], ['v_B/A, a_B/A', 'relative velocity/acceleration of point B as seen from point A'], ['IC', 'instantaneous centre of zero velocity'], ['G', 'the body\'s mass centre'], ['R', 'wheel/disk radius (rolling problems)']],
     lesson:
 `<p>A rigid body does not deform, so the distance between any two of its points never changes. Three kinds of motion: <b>translation</b> (every point moves the same), <b>rotation about a fixed axis</b>, and <b>general plane motion</b> (both together).</p>
 <h4>Angular motion</h4>
@@ -18,7 +19,7 @@ DATA.addTopics('MECH2210', [
 <h4>Rolling without slipping</h4>
 <p>The contact point is the IC (zero velocity). v<sub>G</sub> = ω R, a<sub>G</sub> = α R (centre in a straight line). The top of the wheel moves at 2 v<sub>G</sub>. The contact point's acceleration is ω² R pointing towards the centre (it is <b>not</b> zero).</p>`,
     example: { q: 'A 2 m ladder AB has end A sliding on the floor at 4 m/s (right) while B slides down a wall. At 30° to the floor, find ω and v<sub>B</sub>.',
-      steps: ['Perpendicular to v<sub>A</sub> (vertical line through A) and to v<sub>B</sub> (horizontal line through B) intersect at the IC, directly above A at height L sin30° = 1 m, and level with B.', 'v<sub>A</sub> = ω × (distance A to IC) → ω = 4/1 = 4 rad/s.', 'Distance from B to IC = L cos30° = 1.732 m, so v<sub>B</sub> = 4 × 1.732 = 6.93 m/s (down the wall).'] },
+      steps: ['Perpendicular to v<sub>A</sub> (vertical line through A) and to v<sub>B</sub> (horizontal line through B) intersect at the IC, directly above A at height L sin30° = 1 m, and level with B.', 'v = ω × (distance to IC) → ω = v<sub>A</sub>/(distance A to IC) = 4/1 = 4 rad/s.', 'Distance from B to IC = L cos30° = 1.732 m, so v<sub>B</sub> = ω × (distance B to IC) = 4 × 1.732 = 6.93 m/s (down the wall).'] },
     slides: [S10b('L14_Kin-05', 'L14: angular motion'), S10b('L14_Kin-09', 'L14: instantaneous centre of rotation'), S10b('L14_Kin-14', 'L14: relative velocity')],
     formulas: ['v = ωr, a_t = αr, a_n = ω²r', 'v_B = v_A + ω × r_B/A (|v_B/A| = ω·AB, ⟂ AB)', 'a_B = a_A + α × r_B/A − ω²r_B/A', 'Rolling no slip: v_G = ωR, a_G = αR, contact point is the IC'],
     cards: [
@@ -41,6 +42,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'rkinetics', name: 'Rigid body kinetics (ΣF = ma, ΣM = Iα)', freq: 1, freqNote: 'Part A of 2023, 2024 and 2025 exams (see-saw, wheel with couple, disk + block)', assigned: false,
+    notation: [['G', 'the mass centre of the body'], ['a_G', 'acceleration of the mass centre'], ['I_G', 'mass moment of inertia about the mass centre G'], ['I_O', 'mass moment of inertia about a fixed axis O'], ['α ("alpha")', 'angular acceleration'], ['k (or k_G)', 'radius of gyration (I = mk²)'], ['d', 'distance between two parallel axes (parallel axis theorem)'], ['M (or ΣM)', 'applied moment/couple'], ['N', 'normal force'], ['μ_s, μ_k', 'static and kinetic friction coefficients'], ['FBD', 'free body diagram']],
     lesson:
 `<p>Kinetics of a rigid body = Newton's second law for translation <b>plus</b> a moment equation for rotation. This is the single most examined idea in MECH2210 Part A.</p>
 <h4>Equations of motion (2D)</h4>
@@ -81,6 +83,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'rwe', name: 'Rigid body work and energy', freq: 0.6, freqNote: 'Week 7. Shortcut for speed problems.', assigned: false,
+    notation: [['T', 'kinetic energy (translation + rotation)'], ['V', 'potential energy (gravity + spring)'], ['v_G', 'speed of the mass centre'], ['ω', 'angular velocity'], ['I_G, I_O', 'mass moment of inertia about G or a fixed axis O'], ['U (ΣU)', 'work done'], ['M', 'applied moment/couple'], ['Δθ', 'angle turned through'], ['k, k_t', 'linear and torsional spring stiffness'], ['s, θ', 'spring stretch / torsional spring twist']],
     lesson:
 `<p>Same principle as for particles, but kinetic energy now includes rotation.</p>
 <h4>Kinetic energy</h4>
@@ -110,6 +113,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'rimp', name: 'Rigid body impulse-momentum and impacts', freq: 1, freqNote: 'Part A of 2023 (clay on plank), 2024 (ballistic pendulum), 2025 (see-saw)', assigned: false,
+    notation: [['v_G', 'velocity of the mass centre'], ['ω₁, ω₂', 'angular velocity just before (1) and after (2) the event'], ['∫F dt, ∫M dt', 'linear and angular impulse'], ['I_G, I_O', 'mass moment of inertia about G or a fixed point O'], ['H_P', 'angular momentum of the body about point P'], ['P', 'a reference point (often a pivot) impulses are taken about'], ['J', 'an internal contact impulse between two bodies']],
     lesson:
 `<p>Use impulse-momentum for <b>sudden events</b> (a bullet hitting a block, a plank struck by a mass) or when <b>time</b> is involved.</p>
 <h4>Linear</h4>

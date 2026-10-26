@@ -6,7 +6,7 @@ window.DATA = {
     c.topics = c.topics || [];
     c.papers = c.papers || [];
     c.topics.forEach(function (t) {
-      t.formulas = t.formulas || []; t.cards = t.cards || []; t.slides = t.slides || [];
+      t.formulas = t.formulas || []; t.cards = t.cards || []; t.slides = t.slides || []; t.notation = t.notation || [];
       (t.questions || []).forEach(function (q, i) { q.id = t.id + '#' + (i + 1); q.topic = t.id; });
       t.cards.forEach(function (cd, i) { cd.id = c.id + '/' + t.id + '@' + i; });
     });
@@ -17,7 +17,7 @@ window.DATA = {
   addTopics: function (cid, topics) {
     var c = this.course(cid);
     topics.forEach(function (t) {
-      t.formulas = t.formulas || []; t.cards = t.cards || []; t.slides = t.slides || [];
+      t.formulas = t.formulas || []; t.cards = t.cards || []; t.slides = t.slides || []; t.notation = t.notation || [];
       (t.questions || []).forEach(function (q, i) { q.id = t.id + '#' + (i + 1); q.topic = t.id; });
       t.cards.forEach(function (cd, i) { cd.id = cid + '/' + t.id + '@' + i; });
       c.topics.push(t);

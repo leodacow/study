@@ -6,6 +6,7 @@ DATA.addTopics('MATH2010', [
   /* ------------------------------------------------------------ */
   { id: 'linsolve', name: 'Solving a linear system ẏ = Ay (eigenvalue method)', freq: 0.55, freqNote: 'Sem 1 2020 Q3, 2017 Q2(a); needed for every phase portrait', assigned: true,
     assignedNote: 'Assignment 1 covers solving systems by eigenvalues, so a little less priority. Still the foundation for the next topic.',
+    notation: [['y (bold)', 'the solution vector (y₁, y₂)ᵀ — same as (x, y)ᵀ on the exam'], ['ẏ', 'dy/dt (dot = derivative with respect to time)'], ['A', 'the 2×2 coefficient matrix'], ['λ ("lambda")', 'an eigenvalue of A'], ['v', 'an eigenvector of A'], ['τ ("tau")', 'trace of A = a₁₁ + a₂₂'], ['Δ', 'determinant of A = a₁₁a₂₂ − a₁₂a₂₁'], ['I', 'the identity matrix'], ['c₁, c₂', 'arbitrary constants fixed by the initial condition y(0)'], ['α, β', 'real and imaginary parts of a complex eigenvalue λ = α ± iβ']],
     lesson:
 `<p><b>What is a system of ODEs?</b> Two quantities that change in time and affect each other. We stack them in a vector y = (y₁, y₂)ᵀ (the exam writes (x, y)ᵀ) and a <b>linear system</b> is <b>ẏ = A y</b>, where A is a 2×2 matrix of numbers.</p>
 <p><b>Key idea.</b> Try a solution of the form <b>y = v e<sup>λt</sup></b>. Substituting gives A v = λ v, so λ must be an <b>eigenvalue</b> of A and v an <b>eigenvector</b>.</p>
@@ -52,6 +53,7 @@ DATA.addTopics('MATH2010', [
 
   /* ------------------------------------------------------------ */
   { id: 'classify', name: 'Classifying a critical point and sketching linear phase portraits', freq: 0.9, freqNote: 'Sem 2 2017 Q1 and Q2(a); the first step of every nonlinear question (20 marks)', assigned: false,
+    notation: [['τ ("tau")', 'trace of A = a₁₁ + a₂₂'], ['Δ', 'determinant of A = a₁₁a₂₂ − a₁₂a₂₁'], ['λ', 'eigenvalue of A'], ['α ± iβ', 'a complex-conjugate pair of eigenvalues (α = real part, β = imaginary part)'], ['a₁₁, a₂₁, …', 'the entries of the matrix A (row, column)'], ['(x, y)', 'the plane the phase portrait is drawn in']],
     lesson:
 `<p>A <b>phase portrait</b> is a picture of the (x, y) plane showing the paths (trajectories) that solutions follow, with arrows for the direction of time. For ẏ = Ay the origin is the only <b>critical point</b> (also called stationary, equilibrium or fixed point), where ẏ = 0. The shape of the picture is decided by the <b>eigenvalues</b> of A.</p>
 <h4>Classify using trace τ and determinant Δ (fastest)</h4>
@@ -108,6 +110,7 @@ DATA.addTopics('MATH2010', [
 
   /* ------------------------------------------------------------ */
   { id: 'nonlin', name: 'Nonlinear systems: critical points, linearisation and sketching', freq: 0.95, freqNote: 'Q1 (20 marks) in Sem 2 2020, Sem 1 2021 and Sem 1 2020 finals', assigned: false,
+    notation: [['f(x, y), g(x, y)', 'the right-hand sides: ẋ = f, ẏ = g'], ['(x*, y*)', 'a critical (stationary/fixed) point: where f = g = 0'], ['J', 'the Jacobian matrix of partial derivatives'], ['f_x, f_y, g_x, g_y', 'partial derivatives of f and g with respect to x and y'], ['w', 'the small displacement (x − x*, y − y*) used in the linearised system ẇ = Jw'], ['τ, Δ', 'trace and determinant of J at a critical point (classify as before)'], ['heteroclinic orbit', 'a trajectory that leaves one critical point and arrives at a different one']],
     lesson:
 `<p>A <b>nonlinear system</b> (ẋ, ẏ) = (f(x, y), g(x, y)) usually has several critical points. Near each one the nonlinear system behaves like a <b>linear</b> system, which we can classify with the previous topic. Then we join the local pictures together. This is the biggest question on the exam, so learn the routine.</p>
 <h4>The routine</h4>
@@ -154,6 +157,7 @@ DATA.addTopics('MATH2010', [
 
   /* ------------------------------------------------------------ */
   { id: 'curves', name: 'Phase curves, y(x), and where a trajectory ends up', freq: 0.6, freqNote: 'Q3 in Sem 2 2020 and Sem 1 2021 (11-15 marks)', assigned: false,
+    notation: [['dy/dx', 'the slope of the phase curve, equal to ẏ/ẋ'], ['C', 'the constant of integration — each value traces out one phase curve'], ['fixed/stationary point', 'where ẋ = ẏ = 0 (can be a whole line, not just isolated points)'], ['t → ∞', 'the long-time limit of a trajectory']],
     lesson:
 `<p>Sometimes we can find the <b>shape</b> of the trajectories exactly, without solving for x(t) and y(t). Divide the two equations (chain rule):</p>
 <p style="text-align:center"><b>dy/dx = ẏ / ẋ</b></p>

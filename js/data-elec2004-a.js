@@ -5,6 +5,7 @@ var E4F = function (n) { return '<img class="fig" src="img/elec2004/' + n + '.jp
 DATA.addTopics('ELEC2004', [
   /* ------------------------------------------------------------ */
   { id: 'opamp', name: 'Ideal op-amp circuits (the building blocks)', freq: 0.4, freqNote: 'First-half topic, but hidden inside 2022 Q1A, Q2 and every Sallen-Key filter', assigned: false,
+    notation: [['V_i, V_o (or v_i, v_o)', 'input and output voltage'], ['Z_in, Z_f', 'input impedance and feedback impedance'], ['R, C, L', 'resistance, capacitance, inductance'], ['s', 'the Laplace/complex frequency variable'], ['H(s) or H(jω)', 'transfer function (output/input)'], ['ω ("omega")', 'angular frequency (rad/s)']],
     lesson:
 `<p>Almost every second-half circuit hides an op-amp. With an <b>ideal op-amp and negative feedback</b> two rules solve everything:</p>
 <ol><li><b>No current into the inputs</b> (i₊ = i₋ = 0).</li><li><b>The inputs sit at the same voltage</b> (v₊ = v₋).</li></ol>
@@ -37,6 +38,7 @@ DATA.addTopics('ELEC2004', [
 
   /* ------------------------------------------------------------ */
   { id: 'lapcirc', name: 'Laplace transforms in circuit analysis', freq: 0.8, freqNote: '4 of 5 finals: 2018 Q1B, 2019 Q1A, 2021 Q1A, 2022 Q1A (8-9 marks each)', assigned: false,
+    notation: [['v(t), i(t)', 'voltage and current as functions of time'], ['V(s), I(s)', 'their Laplace transforms'], ['s', 'the Laplace transform variable'], ['H(s)', 'transfer function, Y(s)/X(s) with zero initial conditions'], ['h(t)', 'impulse response, L⁻¹{H(s)}'], ['i(0), v(0)', 'initial current/voltage (initial conditions)'], ['ω_n, ζ ("zeta")', 'natural frequency and damping ratio of a 2nd-order circuit'], ['α, β', 'real and imaginary parts of a complex pole, −α ± jβ']],
     lesson:
 `<p>The s-domain turns differential equations into algebra. Analyse the circuit exactly as with resistors, using impedances.</p>
 <h4>s-domain elements (zero initial conditions)</h4>
@@ -88,6 +90,7 @@ DATA.addTopics('ELEC2004', [
 
   /* ------------------------------------------------------------ */
   { id: 'feedback', name: 'Transfer functions, feedback and damping conditions', freq: 1, freqNote: 'Every final 2016-2022 (Q1, 8-20 marks); Homework 3 Q2 is the same style', assigned: true,
+    notation: [['C(s)', 'controller transfer function'], ['P(s)', 'plant (system being controlled) transfer function'], ['T(s)', 'closed-loop transfer function, Y(s)/R(s)'], ['r, y', 'reference (input) and output signals'], ['k_p, k_i', 'proportional and integral gains (PI controller)'], ['ω_n', 'natural frequency'], ['ζ ("zeta")', 'damping ratio'], ['m, b, k', 'mass, damping coefficient, spring stiffness (mechanical analogy)'], ['L, R, J', 'inductance, resistance, rotational inertia (DC motor model)']],
     assignedNote: 'Homework 3 already practised the PI-controller question, but it is on almost every final, so keep it high.',
     lesson:
 `<h4>Block diagrams</h4>
@@ -130,6 +133,7 @@ DATA.addTopics('ELEC2004', [
 
   /* ------------------------------------------------------------ */
   { id: 'freqresp', name: 'Frequency response and multi-frequency inputs', freq: 0.8, freqNote: 'Q2 in 2019, 2021 and 2022 (10 marks: find R, C, c, θ); 2019 Q4 (RC low-pass)', assigned: false,
+    notation: [['H(jω)', 'frequency response (transfer function with s = jω)'], ['ω ("omega")', 'angular frequency, rad/s'], ['ω_c', 'cutoff (corner) frequency'], ['A, φ ("phi")', 'amplitude and phase of a sinusoid'], ['R, C', 'resistance and capacitance'], ['dB', 'decibels, 20 log₁₀|H|']],
     lesson:
 `<p>For a sinusoidal input in steady state, put <b>s = jω</b>: the output is the input scaled by <b>|H(jω)|</b> and shifted by <b>∠H(jω)</b>.</p>
 <p>x(t) = A cos(ωt + φ) → y(t) = A|H(jω)| cos(ωt + φ + ∠H(jω)).</p>

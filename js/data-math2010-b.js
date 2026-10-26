@@ -3,6 +3,7 @@ var M10b = function (n, cap) { return { src: 'img/math2010/' + n, cap: cap }; };
 DATA.addTopics('MATH2010', [
   /* ------------------------------------------------------------ */
   { id: 'lapbasic', name: 'Laplace transforms: using the table and inverting with partial fractions', freq: 1, freqNote: 'Inside every Laplace question on every paper', assigned: false,
+    notation: [['f(t)', 'the original function of time'], ['F(s) or L{f}', 'the Laplace transform of f(t), a function of s'], ['s', 'the transform variable (plays the role of "frequency")'], ['a, α, k', 'constants that appear inside f(t) (decay rate, angular frequency, time shift)'], ['u(t − k)', 'the Heaviside unit step function, 0 before t = k and 1 after'], ['n!', 'n factorial, used in the tⁿ transform pair'], ['f⁽ⁿ⁾(t)', 'the n-th derivative of f with respect to t']],
     lesson:
 `<p>The <b>Laplace transform</b> turns a hard calculus problem in t into an easy algebra problem in s. Definition: <b>F(s) = L{f(t)} = ∫₀^∞ e<sup>−st</sup> f(t) dt</b>. It is <b>linear</b>: L{a f + b g} = a F + b G.</p>
 <h4>The exam gives you this table (you do not need to memorise it)</h4>
@@ -68,6 +69,7 @@ DATA.addTopics('MATH2010', [
 
   /* ------------------------------------------------------------ */
   { id: 'lapivp', name: 'Solving initial value problems with Laplace transforms', freq: 0.9, freqNote: 'Sem 2 2017 Q2(b), 2023 Q3, and the first step of every transfer function question', assigned: false,
+    notation: [['y(t), x(t)', 'the unknown function(s) of time'], ['Y(s), X(s)', 'their Laplace transforms'], ['y(0), ẏ(0)', 'the given initial conditions'], ['R(s)', 'the Laplace transform of the forcing/right-hand side r(t)'], ['a, b, c', 'the constant coefficients of the ODE aÿ + bẏ + cy = r(t)'], ['s', 'the transform variable']],
     lesson:
 `<p>An <b>initial value problem (IVP)</b> is a differential equation plus starting values. Laplace transforms handle the starting values automatically.</p>
 <h4>The key rules (derivatives)</h4>
@@ -83,7 +85,7 @@ DATA.addTopics('MATH2010', [
 <p>Transform each equation. You get two algebraic equations for X(s) and Y(s). Solve them (substitution or Cramer's rule), then invert each.</p>
 <p>The characteristic polynomial (as² + bs + c) is the same one you used for eigenvalues. Its roots are the poles.</p>`,
     example: { q: '(2017 Q2b) Solve ẍ − 5ẋ + 6x = 2 with x(0) = 0, ẋ(0) = 0.',
-      steps: ['Transform: s²X − 5sX + 6X = 2/s (zero initial conditions).', 'X = 2/(s(s − 2)(s − 3)).', 'Cover-up: A (s = 0): 2/((−2)(−3)) = 1/3. B (s = 2): 2/(2 · (−1)) = −1. C (s = 3): 2/(3 · 1) = 2/3.', '<b>x(t) = 1/3 − e<sup>2t</sup> + (2/3)e<sup>3t</sup></b>. Check: x(0) = 1/3 − 1 + 2/3 = 0 ✓, ẋ(0) = −2 + 2 = 0 ✓.'] },
+      steps: ['Transform using L{ẍ} = s²X − sx(0) − ẋ(0) and L{ẋ} = sX − x(0): s²X − 5sX + 6X = 2/s (zero initial conditions).', 'X = 2/(s(s − 2)(s − 3)).', 'Cover-up: A (s = 0): 2/((−2)(−3)) = 1/3. B (s = 2): 2/(2 · (−1)) = −1. C (s = 3): 2/(3 · 1) = 2/3.', '<b>x(t) = 1/3 − e<sup>2t</sup> + (2/3)e<sup>3t</sup></b>. Check: x(0) = 1/3 − 1 + 2/3 = 0 ✓, ẋ(0) = −2 + 2 = 0 ✓.'] },
     slides: [M10b('sol/2017_q2b.jpg', 'Official handwritten solution, 2017 Q2(b)'), M10b('sol/2020s1_q2a.jpg', 'Official handwritten solution, Sem 1 2020 Q2 (1/2)'), M10b('sol/2020s1_q2b.jpg', 'Official handwritten solution, Sem 1 2020 Q2 (2/2)')],
     formulas: ['L{ẏ} = sY − y(0); L{ÿ} = s²Y − sy(0) − ẏ(0)', 'aÿ + bẏ + cy = r: (as² + bs + c)Y = R(s) + (as + b)y(0) + aẏ(0)', 'Steps: transform → solve for Y → partial fractions → invert → check ICs'],
     cards: [
@@ -109,6 +111,7 @@ DATA.addTopics('MATH2010', [
 
   /* ------------------------------------------------------------ */
   { id: 'lapstep', name: 'Step functions and the second shifting theorem', freq: 0.8, freqNote: 'Sem 2 2017 Q3, Sem 1 2020 Q2, Sem 1 2021 Q2 (switching forcing)', assigned: false,
+    notation: [['u(t − k)', 'the Heaviside unit step: 0 before t = k, 1 from t = k onward'], ['k', 'the time the switch happens'], ['f₁(t), f₂(t)', 'the function before and after the switch'], ['F(s)', 'the Laplace transform of f(t)'], ['r(t)', 'the forcing function (right-hand side of the ODE)']],
     lesson:
 `<p>The <b>Heaviside step function</b> u(t − k) is 0 for t &lt; k and 1 for t ≥ k. It lets us write a force that switches on or off at time k.</p>
 <h4>Writing a piecewise function with steps</h4>
@@ -121,7 +124,7 @@ DATA.addTopics('MATH2010', [
 <p>L⁻¹{e<sup>−ks</sup> F(s)} = <b>f(t − k) u(t − k)</b>: take the inverse f(t) of F, replace t by (t − k), and multiply by u(t − k). So the answer is "0 until t = k, then the shifted function".</p>
 <p>Example: L{u(t − 3)} = e<sup>−3s</sup>/s. And L{t u(t − 2)}: write t = (t − 2) + 2, giving e<sup>−2s</sup>(1/s² + 2/s).</p>`,
     example: { q: '(2017 Q3) Solve ÿ + 3y = 2u(t − 5) sin(t − 5), y(0) = 0, ẏ(0) = 0.',
-      steps: ['L{2u(t − 5) sin(t − 5)} = 2e<sup>−5s</sup>/(s² + 1) (second shifting, f = sin).', '(s² + 3)Y = 2e<sup>−5s</sup>/(s² + 1) → Y = 2e<sup>−5s</sup>/((s² + 1)(s² + 3)).', '1/((s² + 1)(s² + 3)) = ½[1/(s² + 1) − 1/(s² + 3)], so Y = e<sup>−5s</sup>[1/(s² + 1) − 1/(s² + 3)].', 'Invert with the shift: <b>y(t) = u(t − 5)[ sin(t − 5) − (1/√3) sin(√3(t − 5)) ]</b>.'] },
+      steps: ['Second shifting theorem L{f(t − k)u(t − k)} = e<sup>−ks</sup>F(s), with f = sin, k = 5: L{2u(t − 5) sin(t − 5)} = 2e<sup>−5s</sup>/(s² + 1).', '(s² + 3)Y = 2e<sup>−5s</sup>/(s² + 1) → Y = 2e<sup>−5s</sup>/((s² + 1)(s² + 3)).', '1/((s² + 1)(s² + 3)) = ½[1/(s² + 1) − 1/(s² + 3)], so Y = e<sup>−5s</sup>[1/(s² + 1) − 1/(s² + 3)].', 'Invert with the shift: <b>y(t) = u(t − 5)[ sin(t − 5) − (1/√3) sin(√3(t − 5)) ]</b>.'] },
     slides: [M10b('sol/2017_q3.jpg', 'Official handwritten solution, 2017 Q3')],
     formulas: ['f = f₁ + (f₂ − f₁)u(t − k); pulse on [a, b): u(t − a) − u(t − b)', 'L{f(t − k)u(t − k)} = e^(−ks)F(s); L{u(t − k)} = e^(−ks)/s', 'L⁻¹{e^(−ks)F(s)} = f(t − k)u(t − k)', 'Write t = (t − k) + k before transforming t·u(t − k)'],
     cards: [
@@ -150,6 +153,7 @@ DATA.addTopics('MATH2010', [
   /* ------------------------------------------------------------ */
   { id: 'lapconv', name: 'Transfer functions and the convolution theorem', freq: 1, freqNote: 'Q2 in 2017, Sem 2 2020 and Sem 1 2021 ("USE THE CONVOLUTION THEOREM")', assigned: false,
     assignedNote: 'Assignment 2 Q8 uses the convolution theorem, but the exam style is different, so still practise it.',
+    notation: [['f * g', 'the convolution of f and g, ∫₀ᵗ f(τ)g(t − τ)dτ'], ['τ ("tau")', 'the dummy integration variable inside a convolution (not time itself)'], ['Q(s)', 'the transfer function, 1/(as² + bs + c) — depends only on the system, not the forcing'], ['q(t)', 'the inverse transform of Q(s), L⁻¹{Q(s)}'], ['r(t), R(s)', 'the forcing function and its transform'], ['y(t), Y(s)', 'the response (solution) and its transform']],
     lesson:
 `<p><b>The convolution of f and g</b> is <b>(f * g)(t) = ∫₀ᵗ f(τ) g(t − τ) dτ</b>. The theorem says <b>L{f * g} = F(s) G(s)</b>. So if you can see a transform as a <b>product</b> of two simpler transforms, its inverse is a convolution: <b>L⁻¹{F G} = f * g</b>. (f * g = g * f, so choose whichever order makes the integral easier.)</p>
 <h4>Transfer function</h4>
@@ -164,7 +168,7 @@ DATA.addTopics('MATH2010', [
 <h4>First order with general initial value</h4>
 <p>ẏ + αy = g(t), y(0) = y₀ → Y = (G(s) + y₀)/(s + α) → <b>y(t) = y₀e<sup>−αt</sup> + ∫₀ᵗ e<sup>−α(t−τ)</sup> g(τ) dτ</b>.</p>`,
     example: { q: '(2020 Q2) y″ − y = t, y(0) = y′(0) = 0. Find Q(s), q(t), then y(t) by convolution.',
-      steps: ['(s² − 1)Y = R(s) = 1/s². So <b>Q(s) = 1/(s² − 1)</b>.', 'Q = 1/((s − 1)(s + 1)) = ½[1/(s − 1) − 1/(s + 1)] → <b>q(t) = ½(e<sup>t</sup> − e<sup>−t</sup>)</b> = sinh t.', 'y(t) = ∫₀ᵗ q(t − τ) τ dτ = ∫₀ᵗ ½(e<sup>t−τ</sup> − e<sup>−(t−τ)</sup>) τ dτ. Integrate by parts (u = τ): the result is <b>y(t) = ½(e<sup>t</sup> − e<sup>−t</sup>) − t = sinh t − t</b>.', 'Check: y″ − y = sinh t − (sinh t − t) = t ✓, y(0) = 0, y′(0) = cosh 0 − 1 = 0 ✓.'] },
+      steps: ['Transfer function Q(s) = Y(s)/R(s) with zero ICs: (s² − 1)Y = R(s) = 1/s². So <b>Q(s) = 1/(s² − 1)</b>.', 'Q = 1/((s − 1)(s + 1)) = ½[1/(s − 1) − 1/(s + 1)] → <b>q(t) = ½(e<sup>t</sup> − e<sup>−t</sup>)</b> = sinh t.', 'Convolution theorem: y(t) = (q * r)(t) = ∫₀ᵗ q(t − τ) r(τ) dτ = ∫₀ᵗ ½(e<sup>t−τ</sup> − e<sup>−(t−τ)</sup>) τ dτ. Integrate by parts (u = τ): the result is <b>y(t) = ½(e<sup>t</sup> − e<sup>−t</sup>) − t = sinh t − t</b>.', 'Check: y″ − y = sinh t − (sinh t − t) = t ✓, y(0) = 0, y′(0) = cosh 0 − 1 = 0 ✓.'] },
     slides: [M10b('sol/2021_q2_a.jpg', 'Official handwritten solution, 2021 Q2 (1/3)'), M10b('sol/2021_q2_b.jpg', 'Official handwritten solution, 2021 Q2 (2/3)'), M10b('sol/2021_q2_c.jpg', 'Official handwritten solution, 2021 Q2 (3/3)'), M10b('sol/2020_q2_a.jpg', 'Official handwritten solution, 2020 Q2 (1/3)'), M10b('sol/2020_q2_b.jpg', 'Official handwritten solution, 2020 Q2 (2/3)'), M10b('sol/2020_q2_c.jpg', 'Official handwritten solution, 2020 Q2 (3/3)'), M10b('sol/2017_q4.jpg', 'Official handwritten solution, 2017 Q4')],
     formulas: ['(f * g)(t) = ∫₀ᵗ f(τ)g(t − τ)dτ; L{f * g} = F G; f * g = g * f', 'aÿ + bẏ + cy = r, zero ICs: Y = Q R, Q = 1/(as² + bs + c)', 'y(t) = (q * r)(t) = ∫₀ᵗ q(t − τ) r(τ) dτ, q = L⁻¹{Q}', 'ẏ + αy = g, y(0) = y₀: y = y₀e^(−αt) + ∫₀ᵗ e^(−α(t−τ))g(τ)dτ'],
     cards: [
@@ -196,6 +200,7 @@ DATA.addTopics('MATH2010', [
   /* ------------------------------------------------------------ */
   { id: 'lapextra', name: 'Extra Laplace tools: t·f(t), f(t)/t, periodic functions', freq: 0.3, freqNote: 'Rarely examined; on the table so they may appear', assigned: true,
     assignedNote: 'Assignment 2 (Q4, Q6) already covers these, so a low priority.',
+    notation: [['F′(s)', 'the derivative of F(s) with respect to s'], ['σ ("sigma")', 'dummy variable of integration (used instead of s so it isn\'t confused with the outer s)'], ['T', 'the period of a periodic function, f(t + T) = f(t)'], ['Γ(a)', 'the Gamma function (generalises factorial: Γ(n+1) = n!)']],
     lesson:
 `<p>Three more rows of the table, and a standard formula that is NOT on it.</p>
 <ul><li><b>Multiplying by t:</b> L{t f(t)} = −F′(s). Example: L{t sin t} = −d/ds[1/(s² + 1)] = 2s/(s² + 1)². Used backwards: L⁻¹{2s/(s² + 4)²} = (t sin 2t)/2, because L{t sin αt} = 2αs/(s² + α²)².</li>
@@ -203,7 +208,7 @@ DATA.addTopics('MATH2010', [
 <li><b>Periodic functions</b> (not in the table): if f(t + T) = f(t), then <b>L{f} = [1/(1 − e<sup>−sT</sup>)] ∫₀ᵀ e<sup>−st</sup> f(t) dt</b>.</li>
 <li><b>Non-integer powers:</b> L{t<sup>a</sup>} = Γ(a + 1)/s<sup>a+1</sup>, e.g. L{t<sup>−1/2</sup>} = √(π/s).</li></ul>`,
     example: { q: 'Square wave f(t) = 1 for 0 ≤ t &lt; 1 and 0 for 1 ≤ t &lt; 2, period T = 2. Find L{f}.',
-      steps: ['∫₀² e<sup>−st</sup>f dt = ∫₀¹ e<sup>−st</sup> dt = (1 − e<sup>−s</sup>)/s.', 'L{f} = (1 − e<sup>−s</sup>)/(s(1 − e<sup>−2s</sup>)) = <b>1/(s(1 + e<sup>−s</sup>))</b> since 1 − e<sup>−2s</sup> = (1 − e<sup>−s</sup>)(1 + e<sup>−s</sup>).'] },
+      steps: ['∫₀ᵀ e<sup>−st</sup>f dt = ∫₀² e<sup>−st</sup>f dt = ∫₀¹ e<sup>−st</sup> dt = (1 − e<sup>−s</sup>)/s.', 'Periodic formula L{f} = [1/(1 − e<sup>−sT</sup>)]∫₀ᵀ e<sup>−st</sup>f dt = (1 − e<sup>−s</sup>)/(s(1 − e<sup>−2s</sup>)) = <b>1/(s(1 + e<sup>−s</sup>))</b> since 1 − e<sup>−2s</sup> = (1 − e<sup>−s</sup>)(1 + e<sup>−s</sup>).'] },
     slides: [],
     formulas: ['L{t f(t)} = −F′(s)', 'L{f(t)/t} = ∫ₛ^∞ F(σ)dσ', 'Periodic f, period T: L{f} = ∫₀ᵀ e^(−st) f dt / (1 − e^(−sT))', 'L{t^a} = Γ(a + 1)/s^(a+1)'],
     cards: [

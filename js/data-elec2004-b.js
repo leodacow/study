@@ -3,6 +3,7 @@
 DATA.addTopics('ELEC2004', [
   /* ------------------------------------------------------------ */
   { id: 'fseries', name: 'Fourier series (periodic inputs into circuits)', freq: 0.4, freqNote: '2016 Q2 (5 marks) and 2018 Q2 (9 marks)', assigned: true,
+    notation: [['f(t)', 'the periodic signal'], ['T', 'period'], ['ω₀ ("omega naught")', 'fundamental (angular) frequency, 2π/T'], ['a₀', 'the DC (average) term'], ['a_n, b_n', 'cosine and sine coefficients for the n-th harmonic'], ['n', 'harmonic number (1 = fundamental, 2 = 2nd harmonic, …)'], ['V_m, V_p', 'peak voltage']],
     assignedNote: 'Homework 4 was Fourier series, and it is in only 2 of 5 finals, so it ranks lower.',
     lesson:
 `<p>A periodic signal (period T) is a DC term plus sinusoids at whole multiples of the <b>fundamental frequency ω₀ = 2π/T</b>:</p>
@@ -51,6 +52,7 @@ DATA.addTopics('ELEC2004', [
 
   /* ------------------------------------------------------------ */
   { id: 'ftransform', name: 'Fourier transform: circuits and energy (Parseval)', freq: 1, freqNote: 'Q3 in every final 2016-2022 (7-10 marks)', assigned: false,
+    notation: [['f(t)', 'a (not necessarily periodic) signal'], ['F(ω)', 'its Fourier transform'], ['ω ("omega")', 'angular frequency'], ['u(t)', 'unit step function'], ['sgn(t)', 'signum function (−1 for t&lt;0, +1 for t&gt;0)'], ['δ(ω) ("delta")', 'the Dirac delta (impulse) function'], ['H(ω)', 'the circuit\'s frequency response'], ['W', 'energy (Parseval\'s theorem, 1 Ω energy)']],
     lesson:
 `<p>The Fourier transform handles signals that are not periodic and may exist for t &lt; 0 too, such as sgn(t), e<sup>at</sup>u(−t) and e<sup>−a|t|</sup>.</p>
 <p><b>F(ω) = ∫<sub>−∞</sub><sup>∞</sup> f(t) e<sup>−jωt</sup> dt</b> and f(t) = (1/2π)∫<sub>−∞</sub><sup>∞</sup> F(ω) e<sup>jωt</sup> dω.</p>
@@ -108,6 +110,7 @@ DATA.addTopics('ELEC2004', [
 
   /* ------------------------------------------------------------ */
   { id: 'filters', name: 'Filters: Butterworth design and Sallen-Key circuits', freq: 0.9, freqNote: 'Q4 in every final (4-6 marks): Butterworth high-pass 2016, 2018, 2021; low-pass design 2022', assigned: false,
+    notation: [['ω_c', 'cutoff frequency'], ['H(s)', 'filter transfer function'], ['Q', 'quality factor (sharpness of a 2nd-order section)'], ['A', 'op-amp gain (Sallen-Key)'], ['k', 'pass-band gain'], ['R, C', 'resistance and capacitance values'], ['L, C', 'inductance and capacitance (series RLC filters)'], ['ω₀', 'resonant/centre frequency']],
     lesson:
 `<h4>Words to use correctly</h4>
 <ul><li><b>Ideal filter</b>: passes one band of frequencies unchanged and removes the rest completely. It is <b>physically unrealisable</b>: its impulse response (a sinc) starts before the impulse arrives (non-causal), and it would need infinite order.</li>
@@ -164,6 +167,7 @@ DATA.addTopics('ELEC2004', [
 
   /* ------------------------------------------------------------ */
   { id: 'convolution', name: 'Convolution and impulse response', freq: 0.3, freqNote: 'Only 2021 Q4(a) (4 marks), but quick marks if it appears', assigned: false,
+    notation: [['x(t), h(t)', 'the input signal and the system\'s impulse response'], ['y(t)', 'the output, y = x * h'], ['*', 'the convolution operator'], ['λ ("lambda") or τ ("tau")', 'the dummy integration variable inside the convolution integral'], ['δ(t − a)', 'an impulse at time a']],
     lesson:
 `<p>For a linear time-invariant system with impulse response h(t), the output for any input x(t) is the <b>convolution</b>:</p>
 <p><b>y(t) = x(t) * h(t) = ∫<sub>−∞</sub><sup>∞</sup> x(λ) h(t − λ) dλ</b> (λ is a dummy variable).</p>

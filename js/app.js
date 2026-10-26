@@ -211,6 +211,7 @@ function viewTopic(cid, tid, tab) {
   if (tab === 'practice') { app.innerHTML = h + '<div id="qa"></div>'; return practice(c, t, app.querySelector('#qa')); }
   if (t.assigned && t.assignedNote) h += '<div class="box">' + esc(t.assignedNote) + '</div>';
   h += '<div class="lesson card">' + t.lesson + '</div>';
+  if (t.notation && t.notation.length) h += '<div class="card"><b>Symbols used on this page</b><table class="t"><tr><th>Symbol</th><th>Stands for</th></tr>' + t.notation.map(function (n) { return '<tr><td>' + fx(n[0]) + '</td><td>' + fx(n[1]) + '</td></tr>'; }).join('') + '</table></div>';
   if (t.example) h += '<div class="card"><b>Worked example</b><p>' + t.example.q + '</p><ol>' + t.example.steps.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol></div>';
   if (t.slides && t.slides.length) {
     h += '<div class="card"><b>From your lecture slides</b><p class="mute">Tap a slide to enlarge. This is the notation your lecturer uses, so copy it in the exam.</p><div class="gal">' + t.slides.map(function (s, i) { return '<figure data-i="' + i + '"><img loading="lazy" src="' + s.src + '" alt="' + esc(s.cap || 'slide') + '"><figcaption>' + esc(s.cap || '') + '</figcaption></figure>'; }).join('') + '</div></div>';

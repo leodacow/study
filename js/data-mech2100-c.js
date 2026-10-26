@@ -3,6 +3,7 @@ var M23 = function (n, cap) { return { src: 'img/m2100/' + n + '.jpg', cap: cap 
 DATA.addTopics('MECH2100', [
   /* ------------------------------------------------------------ */
   { id: 'bearings', name: 'Rolling and plain bearings: life, selection, Miner\'s rule', freq: 0.85, freqNote: 'Week 7. Applied class week 7 Q1-Q9 and week 8 Q6', assigned: false,
+    notation: [['C', 'basic dynamic load rating (catalogue value, at L₁₀)'], ['L_d', 'design life in revolutions'], ['P_d', 'equivalent dynamic bearing load'], ['k', 'life exponent (3 ball, 3.33 roller)'], ['R, T', 'radial and thrust (axial) load'], ['V, X, Y', 'rotation factor, radial and thrust load factors'], ['C_R', 'reliability conversion factor'], ['p', 'bearing pressure (plain bearings), F/(LD)'], ['L, D', 'bearing length and shaft diameter'], ['S (Sommerfeld number)', 'dimensionless parameter for hydrodynamic bearings'], ['μ, n_s, c_r', 'oil viscosity, shaft speed (rev/s), radial clearance']],
     lesson:
 `<h4>Rolling-element bearings</h4>
 <ul><li>Parts: inner race, outer race (raceways), rolling elements (balls or rollers), cage. Main failure: <b>surface fatigue</b> (spalling) after many revolutions.</li>
@@ -51,6 +52,7 @@ DATA.addTopics('MECH2100', [
 
   /* ------------------------------------------------------------ */
   { id: 'bolts', name: 'Bolted joints: preload, joint stiffness, separation and slip', freq: 0.9, freqNote: 'Week 9. Applied class week 9 demo + Q1-Q6', assigned: false,
+    notation: [['A_t', 'tensile stress area of the bolt'], ['D, p', 'nominal bolt diameter and thread pitch'], ['S_p, S_y, S_u', 'proof strength, yield strength, ultimate strength'], ['F_p', 'proof load'], ['F_i', 'bolt preload (initial tension)'], ['T', 'tightening torque'], ['K', 'torque coefficient (friction)'], ['k_b, k_c', 'bolt stiffness and clamped-member stiffness'], ['λ ("lambda")', 'joint stiffness constant, k_b/(k_b + k_c)'], ['P', 'external separating load per bolt'], ['F_b, F_c', 'resulting bolt force and clamp (member) force'], ['μ ("mu")', 'friction coefficient (slip check)'], ['F_k, F_n', 'shear/tension force on a bolt in a bolt group'], ['r_k, y_n', 'distance of a bolt from the group centroid']],
     lesson:
 `<h4>Bolt basics</h4>
 <ul><li>Tensile stress area (formula sheet): <b>A<sub>t</sub> = (π/4)(D − 0.9382p)²</b> (D nominal diameter, p pitch). M10 × 1.5 → 58.0 mm², M12 × 1.75 → 84.3 mm², M16 × 2 → 157 mm².</li>
@@ -69,7 +71,7 @@ DATA.addTopics('MECH2100', [
 <ul><li><b>Shear from a torque</b> T = Pe about the group centroid: F<sub>k</sub> = T r<sub>k</sub>A<sub>k</sub>/ΣA r² (perpendicular to r<sub>k</sub>). Add vectorially the direct shear V = P/N. The farthest bolt is critical.</li>
 <li><b>Tension from a moment</b> (bracket pivoting about its edge): F<sub>n</sub> = M y<sub>n</sub>A<sub>n</sub>/ΣA y². The bolt farthest from the pivot carries most.</li></ul>`,
     example: { q: 'M10 × 1.5 class 8.8 bolt (A<sub>t</sub> = 58 mm², S<sub>p</sub> = 600 MPa) preloaded to 75% of proof. λ = 0.25. External separating load 8 kN per bolt. Find F<sub>b</sub>, F<sub>c</sub>, and the separation load.',
-      steps: ['F<sub>p</sub> = 600 × 58 = 34.8 kN; F<sub>i</sub> = 0.75 × 34.8 = 26.1 kN.', 'F<sub>b</sub> = 26.1 + 0.25 × 8 = <b>28.1 kN</b> (σ = 484 MPa &lt; 600).', 'F<sub>c</sub> = 26.1 − 0.75 × 8 = <b>20.1 kN</b> (still clamped).', 'Separation at P = F<sub>i</sub>/(1 − λ) = 26.1/0.75 = <b>34.8 kN</b>.'] },
+      steps: ['F<sub>p</sub> = S<sub>p</sub>A<sub>t</sub> = 600 × 58 = 34.8 kN; F<sub>i</sub> = 0.75F<sub>p</sub> = 0.75 × 34.8 = 26.1 kN.', 'F<sub>b</sub> = F<sub>i</sub> + λP = 26.1 + 0.25 × 8 = <b>28.1 kN</b> (σ = 484 MPa &lt; 600).', 'F<sub>c</sub> = F<sub>i</sub> − (1 − λ)P = 26.1 − 0.75 × 8 = <b>20.1 kN</b> (still clamped).', 'Separation at P = F<sub>i</sub>/(1 − λ) = 26.1/0.75 = <b>34.8 kN</b>.'] },
     slides: [M23('w9_diagram', 'Week 9: bolted joint diagram'), M23('w9_stiff', 'Week 9: clamp member stiffness'), M23('w9_criteria', 'Week 9: design criteria (separation, slip, yield)')],
     formulas: ['A_t = (π/4)(D − 0.9382p)²', 'Class J.K: S_u = 100J, S_y = 0.1K·S_u; F_p = S_p A_t', 'T = K F_i D (K = 0.20 dry, 0.15 lubricated)', 'λ = k_b/(k_b + k_c); F_b = F_i + λP; F_c = F_i − (1 − λ)P', 'No separation: F_i ≥ (1 − λ)P; no slip: V ≤ μF_c', 'Torsion group: F_k = T r_k A_k/ΣAr²; bending group: F_n = M y_n A_n/ΣAy²'],
     cards: [
@@ -98,6 +100,7 @@ DATA.addTopics('MECH2100', [
 
   /* ------------------------------------------------------------ */
   { id: 'boltfatigue', name: 'Fastener fatigue and assembly practice', freq: 0.75, freqNote: 'Week 10. Applied class week 10 Q1-Q8', assigned: false,
+    notation: [['P_min, P_max', 'minimum and maximum external load on the bolt'], ['σ_a, σ_m', 'alternating and mean stress in the bolt'], ['σ_i', 'preload stress, F_i/A_t'], ['λ', 'joint stiffness constant'], ['A_t', 'bolt tensile stress area'], ['S_a', 'allowable alternating strength (Goodman line)'], ['n_f', 'fatigue factor of safety, S_a/σ_a'], ['S_n′, S_ut', 'corrected endurance strength, ultimate tensile strength']],
     lesson:
 `<h4>Stresses in a preloaded bolt under a fluctuating load</h4>
 <p>External load per bolt varies between P<sub>min</sub> and P<sub>max</sub>. Only the fraction λ reaches the bolt:</p>
@@ -116,7 +119,7 @@ DATA.addTopics('MECH2100', [
 <ul><li>Same torque can give different preload: friction scatter (lubrication, surfaces), geometric/thread tolerances, energy lost in twisting and bending. That is why torque control gives ±25% scatter; turn-of-nut, tension-control bolts or direct tension indicators are better.</li>
 <li>Tighten in a cross (star) sequence in stages. Self-loosening is caused by transverse slip; prevent it with enough preload (no slip).</li></ul>`,
     example: { q: 'M12 class 8.8 bolt (A<sub>t</sub> = 84.3 mm², S<sub>ut</sub> = 830, S<sub>p</sub> = 600 MPa), preload 75% of proof, λ = 0.25, load 0 → 18 kN, S<sub>n</sub>\' = 140 MPa. Find n<sub>f</sub>.',
-      steps: ['σ<sub>i</sub> = 0.75 × 600 = 450 MPa.', 'σ<sub>a</sub> = 0.25 × 18 000/(2 × 84.3) = 26.7 MPa; σ<sub>m</sub> = 450 + 26.7 = 476.7 MPa.', 'S<sub>a</sub> = S<sub>n</sub>\'(S<sub>ut</sub> − σ<sub>i</sub>)/(S<sub>ut</sub> + S<sub>n</sub>\') = 140 × 380/970 = 54.8 MPa.', '<b>n<sub>f</sub> = 54.8/26.7 = 2.06</b>.'] },
+      steps: ['σ<sub>i</sub> = F<sub>i</sub>/A<sub>t</sub> = 0.75S<sub>p</sub> = 0.75 × 600 = 450 MPa.', 'σ<sub>a</sub> = λ(P<sub>max</sub> − P<sub>min</sub>)/(2A<sub>t</sub>) = 0.25 × 18 000/(2 × 84.3) = 26.7 MPa; σ<sub>m</sub> = σ<sub>i</sub> + λ(P<sub>max</sub> + P<sub>min</sub>)/(2A<sub>t</sub>) = 450 + 26.7 = 476.7 MPa.', 'S<sub>a</sub> = S<sub>n</sub>\'(S<sub>ut</sub> − σ<sub>i</sub>)/(S<sub>ut</sub> + S<sub>n</sub>\') = 140 × 380/970 = 54.8 MPa.', 'n<sub>f</sub> = S<sub>a</sub>/σ<sub>a</sub> = <b>54.8/26.7 = 2.06</b>.'] },
     slides: [M23('w10_goodman', 'Week 10: solving for fatigue strengths on the A-M diagram')],
     formulas: ['σ_a = λ(P_max − P_min)/(2A_t); σ_m = σ_i + λ(P_max + P_min)/(2A_t); σ_i = F_i/A_t', 'Goodman: S_a = S_n\'σ_a(S_ut − σ_i)/[S_ut σ_a + S_n\'(σ_m − σ_i)]; n_f = S_a/σ_a', 'P_min = 0: S_a = S_n\'(S_ut − σ_i)/(S_ut + S_n\')'],
     cards: [
@@ -138,6 +141,7 @@ DATA.addTopics('MECH2100', [
 
   /* ------------------------------------------------------------ */
   { id: 'welds', name: 'Welded joints: butt and fillet welds, weld groups', freq: 0.85, freqNote: 'Week 11. Applied class week 11 Q1-Q8', assigned: false,
+    notation: [['h', 'fillet weld leg size'], ['t', 'weld throat thickness, 0.707h'], ['L', 'weld length'], ['A (or A_w)', 'weld shear area / total weld length'], ['τ ("tau")', 'shear stress in the weld'], ['F_d', 'design factor (factor of safety)'], ['f', 'force per unit length of weld (N/mm)'], ['f_s, f_b, f_t', 'force per length from direct shear, bending, torsion'], ['S_w, J_w', 'weld group geometry factors (bending, torsion) "per unit throat"'], ['x̄ ("x bar")', 'centroid location of the weld group'], ['HAZ', 'heat-affected zone']],
     lesson:
 `<h4>Weld types</h4>
 <ul><li><b>Complete penetration butt weld:</b> fuses the whole thickness and the electrode matches/exceeds the parent metal, so treat it as the <b>parent metal strength</b>: F ≤ A S<sub>y</sub>/F<sub>d</sub> with A = thickness × width.</li>
@@ -151,7 +155,7 @@ DATA.addTopics('MECH2100', [
 <li>Combine: <b>f<sub>weld</sub> = √(f<sub>s</sub>² + f<sub>b</sub>² + f<sub>t</sub>²)</b>, then <b>τ = f<sub>weld</sub>/(0.707h) ≤ allowable</b>, or required size <b>h = f<sub>weld</sub>/(0.707 τ<sub>allow</sub>)</b>.</li>
 <li>C-shaped (bracket) weld: x̄ = b²/(2b + d), J<sub>w</sub> = (2b + d)³/12 − b²(b + d)²/(2b + d). The critical point is the corner farthest from the centroid; the torque arm is measured from the centroid.</li></ul>`,
     example: { q: 'A 50 mm bar is welded all round to a plate with a 6 mm fillet. Load P at 250 mm from the plate, allowable weld shear 124 MPa. Find the maximum P.',
-      steps: ['Allowable force per length = 124 × 0.707 × 6 = 526 N/mm.', 'A<sub>w</sub> = πd = 157.1 mm; S<sub>w</sub> = πd²/4 = 1963 mm².', 'f = P√[(250/1963)² + (1/157.1)²] = 0.1275P.', 'P = 526/0.1275 = <b>4.13 kN</b>.'] },
+      steps: ['Allowable force per length f<sub>allow</sub> = τ<sub>allow</sub> × 0.707h = 124 × 0.707 × 6 = 526 N/mm.', 'A<sub>w</sub> = πd = 157.1 mm; S<sub>w</sub> = πd²/4 = 1963 mm².', 'f<sub>s</sub> = V/A<sub>w</sub>, f<sub>b</sub> = M/S<sub>w</sub>, f = √(f<sub>s</sub>² + f<sub>b</sub>²) = P√[(250/1963)² + (1/157.1)²] = 0.1275P.', 'P = f<sub>allow</sub>/0.1275 = 526/0.1275 = <b>4.13 kN</b>.'] },
     slides: [M23('w11_throat', 'Week 11: minimum shear area (throat) of a fillet weld'), M23('fs_p28', 'Formula sheet: geometry factors for weld analysis')],
     formulas: ['Butt weld: F ≤ A S_y/F_d', 'Fillet throat t = 0.707h; A = 0.707hL; τ = P/(0.707hL)', 'Allowable: AS4100 0.6k_r S_u (E43XX: 258 MPa); or 0.58S_y', 'f_s = V/A_w; f_b = M/S_w; f_t = Tr/J_w; f = √(f_s² + f_b² + f_t²); h = f/(0.707τ_allow)', 'C-weld: x̄ = b²/(2b + d); J_w = (2b + d)³/12 − b²(b + d)²/(2b + d)'],
     cards: [
@@ -177,6 +181,7 @@ DATA.addTopics('MECH2100', [
 
   /* ------------------------------------------------------------ */
   { id: 'weldfatigue', name: 'Weld fatigue and welded structures (Eurocode 3)', freq: 0.75, freqNote: 'Week 12. Applied class week 12 Q1-Q5', assigned: false,
+    notation: [['S (or Δσ)', 'stress range (not the maximum stress)'], ['S_e', 'cut-off / endurance stress-range limit for the detail category'], ['N', 'number of cycles to failure'], ['detail category', 'a standard number (e.g. 71) naming the joint\'s fatigue class'], ['HAZ', 'heat-affected zone'], ['magnification factor', 'multiplier for secondary bending at hollow-section joints']],
     lesson:
 `<p>Welded joints fail by fatigue at the <b>weld toe</b>, where there is a sharp notch, residual tensile stress and HAZ material. Their fatigue strength depends mainly on the <b>joint detail</b>, not on the steel strength.</p>
 <h4>Classification (nominal stress) method</h4>

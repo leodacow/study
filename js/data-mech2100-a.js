@@ -5,6 +5,7 @@ var M21 = function (n, cap) { return { src: 'img/m2100/' + n + '.jpg', cap: cap 
 DATA.addTopics('MECH2100', [
   /* ------------------------------------------------------------ */
   { id: 'model', name: 'Structural modelling: load paths, FBD/SFD/BMD and trusses', freq: 0.75, freqNote: 'Weeks 1-2 and 12. Applied class: G-clamp, pliers, trusses (weeks 2 and 12)', assigned: false,
+    notation: [['FBD', 'free body diagram'], ['SFD, BMD', 'shear force diagram, bending moment diagram'], ['V', 'shear force at a section'], ['M', 'bending moment at a section'], ['P', 'a point load'], ['w', 'uniformly distributed load (UDL), force per length'], ['L', 'span / length'], ['R', 'support reaction'], ['m, j', 'number of truss members and joints (determinacy check)'], ['two-force member', 'a truss member loaded only at its two end pins, so the force acts along it']],
     lesson:
 `<p>Every machine-element question starts the same way: <b>find where the load goes and where the part is most stressed</b>. This is the "structural integrity framework".</p>
 <h4>The 5 steps (from the applied class)</h4>
@@ -54,6 +55,7 @@ DATA.addTopics('MECH2100', [
 
   /* ------------------------------------------------------------ */
   { id: 'stress', name: 'Stress analysis, Mohr\'s circle and failure theories', freq: 0.95, freqNote: 'Week 2. Used in every later calculation. Applied class Q2-Q8 (week 2) and Q5 (week 3)', assigned: false,
+    notation: [['σ ("sigma")', 'normal (direct) stress'], ['τ ("tau")', 'shear stress'], ['F', 'applied force/load'], ['A', 'cross-sectional area'], ['M', 'bending moment'], ['c', 'distance from the neutral axis to the outer fibre'], ['I', 'second moment of area (bending)'], ['T', 'torque'], ['r', 'radius (torsion)'], ['J', 'polar second moment of area (torsion)'], ['V', 'shear force (transverse shear)'], ['σ₁, σ₂, σ₃', 'principal stresses'], ['τ_max', 'maximum shear stress'], ['σ_eq', 'von Mises equivalent stress'], ['S_y', 'yield strength'], ['n', 'factor of safety'], ['K_t', 'stress concentration factor'], ['E, ν ("nu")', 'Young\'s modulus and Poisson\'s ratio'], ['p, D, t', 'internal pressure, diameter and wall thickness (pressure vessel)']],
     lesson:
 `<p>Stress is force per area. The skill is combining several stresses at one point and deciding if the part fails.</p>
 <h4>Basic stresses (all on the formula sheet)</h4>
@@ -79,7 +81,7 @@ DATA.addTopics('MECH2100', [
 <h4>Thin-walled pressure vessel</h4>
 <p>Hoop stress σ<sub>h</sub> = pD/(2t), longitudinal σ<sub>l</sub> = pD/(4t). These are principal stresses and the third (radial) is about 0 on the outside surface (−p on the inside).</p>`,
     example: { q: 'σ<sub>x</sub> = 90 MPa, σ<sub>y</sub> = −30 MPa, τ<sub>xy</sub> = 40 MPa. Find the principal stresses, the maximum shear and the von Mises stress.',
-      steps: ['σ<sub>avg</sub> = (90 − 30)/2 = 30. R = √(60² + 40²) = 72.1.', 'σ₁ = 102.1 MPa, σ₂ = −42.1 MPa (opposite signs).', 'τ<sub>max</sub> = R = 72.1 MPa.', 'σ<sub>eq</sub> = √(σ₁² − σ₁σ₂ + σ₂²) = √(10426 + 4300 + 1773) = <b>128.5 MPa</b>.'] },
+      steps: ['σ<sub>avg</sub> = (σ<sub>x</sub> + σ<sub>y</sub>)/2 = (90 − 30)/2 = 30. R = √[((σ<sub>x</sub> − σ<sub>y</sub>)/2)² + τ<sub>xy</sub>²] = √(60² + 40²) = 72.1.', 'σ₁,₂ = σ<sub>avg</sub> ± R: σ₁ = 102.1 MPa, σ₂ = −42.1 MPa (opposite signs).', 'τ<sub>max</sub> = (σ₁ − σ₂)/2 = R = 72.1 MPa (opposite-sign case).', 'σ<sub>eq</sub> = √(σ₁² − σ₁σ₂ + σ₂²) = √(10426 + 4300 + 1773) = <b>128.5 MPa</b>.'] },
     slides: [M21('w2_mohr', 'Week 2: Mohr\'s circle equations (centre and radius)')],
     formulas: ['σ = F/A; σ = Mc/I; τ = Tr/J; solid circle I = πD⁴/64, J = πD⁴/32', 'τ_max transverse: rectangle 3V/2A; solid circle 4V/3A; thin tube 2V/A', 'σ₁,₂ = (σx + σy)/2 ± √[((σx − σy)/2)² + τxy²]; τ_max = (σ_max − σ_min)/2 (include σ₃ = 0)', 'von Mises: σ_eq = √(σ₁² − σ₁σ₂ + σ₂²) = √(σ² + 3τ²); n = S_y/σ_eq', 'σ_max = K_t σ_nom', 'Pressure vessel: σ_h = pD/2t, σ_l = pD/4t'],
     cards: [
@@ -115,6 +117,7 @@ DATA.addTopics('MECH2100', [
 
   /* ------------------------------------------------------------ */
   { id: 'fracture', name: 'Fracture mechanics (Griffith, K<sub>I</sub>, critical crack length)', freq: 0.6, freqNote: 'Week 2 lectures and the first page of the formula sheet', assigned: false,
+    notation: [['K_I', 'mode I stress intensity factor'], ['K_IC', 'fracture toughness (material property)'], ['Y', 'geometry factor (depends on crack/part shape)'], ['σ', 'applied (remote) stress'], ['a', 'crack length (or half-length)'], ['σ_f', 'fracture stress'], ['a_cr', 'critical crack length'], ['E', 'Young\'s modulus'], ['R (or 𝒢_c)', 'crack growth resistance (Griffith)'], ['𝒢 ("curly G")', 'energy release rate'], ['r_p', 'plastic zone size at the crack tip (Irwin)'], ['α_p', 'constant in the plastic-zone formula (plane stress vs plane strain)'], ['σ_YS', 'yield strength']],
     lesson:
 `<p>A material containing a crack can break at a stress far below its yield strength. Fracture mechanics tells you the <b>critical stress</b> or <b>critical crack length</b>.</p>
 <h4>Key ideas</h4>
@@ -157,6 +160,7 @@ DATA.addTopics('MECH2100', [
 
   /* ------------------------------------------------------------ */
   { id: 'fatigue', name: 'Fatigue: S-N curves, endurance strength and Miner\'s rule', freq: 0.9, freqNote: 'Week 3. Applied class Q2-Q4 (week 3). Used again in shafts, bolts, welds', assigned: false,
+    notation: [['S', 'stress amplitude (S-N curve)'], ['N', 'number of cycles to failure'], ['m, b', 'slope and intercept of the log-log S-N line'], ['S_n', 'endurance strength (uncorrected, from a chart)'], ['S_n′', 'corrected endurance strength'], ['C_m, C_st, C_R, C_S', 'correction factors: material, type of stress, reliability, size'], ['n_i, N_i', 'cycles applied and cycles-to-failure at stress level i (Miner\'s rule)'], ['σ_m', 'mean stress'], ['σ_a', 'alternating (amplitude) stress'], ['S_u', 'ultimate tensile strength'], ['G', 'shear modulus'], ['ν ("nu")', 'Poisson\'s ratio']],
     lesson:
 `<p>Parts under <b>repeated</b> stress can crack at stresses well below the yield strength. Fatigue life is described by the <b>S-N curve</b> (stress amplitude S against cycles to failure N, on log-log axes).</p>
 <h4>S-N curve in equation form</h4>
@@ -176,7 +180,7 @@ DATA.addTopics('MECH2100', [
 <h4>Material facts</h4>
 <ul><li>Shear modulus G = E / (2(1 + ν)).</li><li>Choose materials by the property that governs: strength vs weight (specific strength = S/(ρg)), hardenability for thick shafts (4140 over 1040), case-hardening (8620 carburised) for gears: hard surface, tough core.</li></ul>`,
     example: { q: 'S-N points (900 MPa, 10³ cycles) and (350 MPa, 10⁶ cycles). Find the life at 500 MPa.',
-      steps: ['m = log(350/900)/log(10⁶/10³) = (−0.4102)/3 = −0.1367.', 'N = 10³ (500/900)<sup>1/m</sup> = 10³ × (0.5556)<sup>−7.314</sup> = 10³ × 73.6 = <b>7.4 × 10⁴ cycles</b>.'] },
+      steps: ['m = log(S₂/S₁)/log(N₂/N₁) = log(350/900)/log(10⁶/10³) = (−0.4102)/3 = −0.1367.', 'Rearranging S₂/S₁ = (N₂/N₁)<sup>m</sup>: N = N₁(S/S₁)<sup>1/m</sup> = 10³ (500/900)<sup>1/m</sup> = 10³ × (0.5556)<sup>−7.314</sup> = 10³ × 73.6 = <b>7.4 × 10⁴ cycles</b>.'] },
     slides: [M21('w3_endurance', 'Week 3: endurance strength chart (surface finish)')],
     formulas: ['log σ_a = m log N + b; S₂/S₁ = (N₂/N₁)^m', 'S_n\' = S_n C_m C_st C_R C_S', 'Miner: Σ n_i/N_i ≥ 1 → failure', 'σ_m = (σ_max + σ_min)/2; σ_a = (σ_max − σ_min)/2', 'Goodman: σ_a/S_n\' + σ_m/S_u = 1/n', 'G = E/(2(1 + ν))'],
     cards: [

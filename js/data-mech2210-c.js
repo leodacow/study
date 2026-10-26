@@ -3,6 +3,7 @@ var S10c = function (n, cap) { return { src: 'img/m2210/' + n + '.jpg', cap: cap
 DATA.addTopics('MECH2210', [
   /* ------------------------------------------------------------ */
   { id: 'vfree', name: 'Undamped free vibration', freq: 0.9, freqNote: 'Part A of 2024 (inertia from measured frequency) and every vibration question builds on it', assigned: false,
+    notation: [['x(t)', 'displacement from equilibrium'], ['m', 'mass'], ['k', 'spring stiffness'], ['ω_n ("omega n")', 'natural (angular) frequency = √(k/m), rad/s'], ['f_n', 'natural frequency in Hz, ω_n/2π'], ['T', 'period of oscillation, 1/f_n'], ['C, φ ("phi")', 'amplitude and phase of x(t) = C sin(ω_nt + φ)'], ['x₀, v₀', 'initial displacement and initial velocity'], ['I', 'mass moment of inertia (rotational systems)'], ['k_t', 'torsional spring stiffness'], ['δ_st ("delta st")', 'static deflection, mg/k']],
     lesson:
 `<p>A mass on a spring, pulled and let go, oscillates forever when there is no damping. This is the foundation of every vibration question.</p>
 <h4>Equation of motion</h4>
@@ -43,6 +44,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'vdamp', name: 'Damped free vibration', freq: 1, freqNote: 'Part A of 2025 (wheel with spring and damper). Foundation for forced vibration.', assigned: false,
+    notation: [['c', 'viscous damping coefficient'], ['c_c', 'critical damping, 2√(km)'], ['ζ ("zeta")', 'damping ratio = c/c_c'], ['ω_n', 'undamped natural frequency, √(k/m)'], ['ω_d', 'damped natural frequency, ω_n√(1 − ζ²)'], ['T_d', 'period of the damped oscillation, 2π/ω_d'], ['δ ("delta")', 'logarithmic decrement, ln(x₁/x₂)'], ['x₁, x₂', 'two successive peak amplitudes'], ['c_t', 'torsional (rotational) damping coefficient']],
     lesson:
 `<p>Add a viscous damper (force = c ẋ opposing velocity):</p>
 <p><b>m ẍ + c ẋ + k x = 0</b> → <b>ẍ + 2ζω<sub>n</sub> ẋ + ω<sub>n</sub>² x = 0</b></p>
@@ -87,6 +89,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'vforced', name: 'Forced vibration (harmonic force)', freq: 1, freqNote: 'Part A of 2025 (disk with applied moment), and L26-L28', assigned: false,
+    notation: [['F₀', 'amplitude of the driving force'], ['ω₀ ("omega naught")', 'forcing (driving) frequency — different from ω_n!'], ['r', 'frequency ratio, ω₀/ω_n'], ['δ_st', 'static deflection, F₀/k'], ['X', 'steady-state response amplitude'], ['MF', 'magnification factor, X/δ_st'], ['φ ("phi")', 'phase lag between the response and the force'], ['ζ', 'damping ratio'], ['M₀', 'amplitude of a driving moment (rotational systems)'], ['θ₀', 'static angular deflection, M₀/k_t']],
     lesson:
 `<p>Now a harmonic force F₀ sin ω₀t drives the mass. (The lecture uses <b>ω₀</b> for the forcing frequency and ω<sub>n</sub> for the natural frequency.)</p>
 <p><b>m ẍ + c ẋ + k x = F₀ sin ω₀t</b></p>
@@ -124,6 +127,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'vbase', name: 'Base excitation and vibration measurement', freq: 0.9, freqNote: 'Part A of 2023 (seismic instrument). Week 10-11 lectures L28-L29.', assigned: false,
+    notation: [['y(t)', 'base (support) displacement, b sin ω₀t'], ['b', 'amplitude of the base motion'], ['x(t)', 'absolute position of the mass'], ['z = x − y', 'relative motion (spring stretch) — what a sensor between mass and base reads'], ['Z', 'steady-state amplitude of the relative motion z'], ['X', 'steady-state amplitude of the absolute motion x'], ['r', 'frequency ratio, ω₀/ω_n'], ['ζ', 'damping ratio'], ['peak-to-peak', 'twice the amplitude (top-to-bottom swing)']],
     lesson:
 `<p>Sometimes the <b>support</b> moves instead of a force being applied: a car chassis on a bumpy road, a seismic instrument on a vibrating structure. Let the base move as <b>y = b sin ω₀t</b>, the mass position be x, and the <b>relative</b> motion z = x − y (spring stretch).</p>
 <p>Equation in relative coordinates (from the lecture): <b>z̈ + 2ζω<sub>n</sub> ż + ω<sub>n</sub>² z = −ÿ = ω₀² b sin ω₀t</b>.</p>
@@ -163,6 +167,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'viso', name: 'Vibration isolation (transmissibility)', freq: 0.7, freqNote: 'Weeks 11-12 (L30 transmissibility)', assigned: false,
+    notation: [['TR', 'transmissibility ratio — fraction of force or motion that gets through the mounts'], ['F_T', 'force transmitted to the support'], ['F₀', 'force produced by the machine'], ['r', 'frequency ratio, ω₀/ω_n'], ['ζ', 'damping ratio'], ['ω₀', 'operating (forcing) frequency of the machine'], ['ω_n', 'natural frequency of the mounting system']],
     lesson:
 `<p>Goal: stop vibration travelling from a machine into its supports (force transmissibility), or from a vibrating floor into delicate equipment (motion transmissibility). The same formula covers both:</p>
 <p><b>TR = √[1 + (2ζr)²] / √[(1 − r²)² + (2ζr)²]</b>, r = ω₀/ω<sub>n</sub>.</p>
@@ -193,6 +198,7 @@ DATA.addTopics('MECH2210', [
 
   /* ------------------------------------------------------------ */
   { id: 'vecc', name: 'Rotating unbalance (eccentric excitation)', freq: 0.7, freqNote: 'Week 11-12 (L31)', assigned: false,
+    notation: [['M', 'total mass of the machine (including the unbalance)'], ['m', 'the small rotating unbalanced mass'], ['e', 'eccentricity — offset of m from the rotation axis'], ['ω₀', 'rotation (operating) speed of the machine'], ['X', 'steady-state vibration amplitude'], ['r', 'frequency ratio, ω₀/ω_n'], ['ζ', 'damping ratio'], ['F_T', 'force transmitted to the ground/support']],
     lesson:
 `<p>A machine of total mass M has a small rotating unbalance m (an offset mass at eccentricity e), spinning at ω₀. The rotating mass produces a vertical force of amplitude <b>m e ω₀²</b> that grows with speed squared.</p>
 <p><b>M ẍ + c ẋ + k x = m e ω₀² sin ω₀t</b></p>
@@ -202,7 +208,7 @@ DATA.addTopics('MECH2210', [
 <p>The spring and damper force: <b>F<sub>T</sub> = X √[k² + (c ω₀)²]</b>.</p>
 <p>(Same r²-type formula as base excitation: the relative-motion curve Z/b with b replaced by m e/M.)</p>`,
     example: { q: 'M = 50 kg machine (including unbalance m e = 0.02 kg·m) on k = 50 kN/m, ζ = 0.1, running at ω₀ = 100 rad/s. Find the amplitude.',
-      steps: ['ω<sub>n</sub> = √(50 000/50) = 31.6 rad/s → r = 3.162, r² = 10.', 'm e/M = 0.02/50 = 0.0004 m.', 'Denominator √[(1 − 10)² + (2 × 0.1 × 3.162)²] = √(81 + 0.4) = 9.02.', 'X = 0.0004 × 10/9.02 = 0.443 mm (close to the limit m e/M = 0.4 mm).'] },
+      steps: ['ω<sub>n</sub> = √(k/M) = √(50 000/50) = 31.6 rad/s → r = ω₀/ω<sub>n</sub> = 3.162, r² = 10.', 'm e/M = 0.02/50 = 0.0004 m.', 'X = (me/M) r²/√[(1 − r²)² + (2ζr)²]: denominator √[(1 − 10)² + (2 × 0.1 × 3.162)²] = √(81 + 0.4) = 9.02.', 'X = 0.0004 × 10/9.02 = 0.443 mm (close to the limit m e/M = 0.4 mm).'] },
     slides: [S10c('EccentricExcitation-03', 'L31: amplitude and phase for eccentric excitation'), S10c('EccentricExcitation-05', 'L31: notes')],
     formulas: ['Force amplitude m e ω₀²; Mẍ + cẋ + kx = m e ω₀² sin ω₀t', 'X = (m e/M) r²/√[(1 − r²)² + (2ζr)²]', 'r ≫ 1: X → m e/M; r = 1: X = (m e/M)/(2ζ)', 'F_T = X√[k² + (cω₀)²]'],
     cards: [
