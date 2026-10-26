@@ -19,7 +19,10 @@ function ds(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice
 function addDays(s, n) { var d = pd(s); d.setDate(d.getDate() + n); return ds(d); }
 function diffDays(a, b) { return Math.round((pd(b) - pd(a)) / 864e5); }
 function fmt(s) { var d = pd(s); return DAYN[d.getDay()] + ' ' + d.getDate() + ' ' + MON[d.getMonth()]; }
-function today() { var t = ds(new Date()); return t < START ? START : t; }
+function today() {
+  var now = new Date(); var t = now.getHours() < 6 ? addDays(ds(now), -1) : ds(now);
+  return t < START ? START : t;
+}
 function hoursFor(s) { return s in S.hours ? S.hours[s] : S.wk[pd(s).getDay()]; }
 function tkey(c, t) { return c.id + '/' + t.id; }
 function topicOf(c, id) { return c.topics.filter(function (t) { return t.id === id; })[0]; }
@@ -54,15 +57,17 @@ function record(c, t, qid, s) {
 /* ---------- planner ---------- */
 function lastExam() { return D.courses.reduce(function (m, c) { return c.exam.date > m ? c.exam.date : m; }, START); }
 function mockBlocks(c) { return c.exam.durMin >= 120 ? 3 : 2; }
+var MAX_GAP = 3; /* a live course priced out by urgency for more than this many days gets an escalating catch-up bonus, so no course sits untouched for weeks */
 function buildPlan() {
-  var start = today(), end = lastExam(), days = [], sim = {}, seen = {};
+  var start = today(), end = lastExam(), days = [], sim = {}, seen = {}, lastTouch = {};
   D.courses.forEach(function (c) {
+    lastTouch[c.id] = 0;
     if (c.topics.length) c.topics.forEach(function (t) { var k = tkey(c, t); sim[k] = need(c, t); seen[k] = !!(S.seen[k] || (S.results[k] || []).length); });
   });
-  for (var d = start; d <= end; d = addDays(d, 1)) {
+  for (var d = start, dayIdx = 0; d <= end; d = addDays(d, 1), dayIdx++) {
     var nb = Math.floor(hoursFor(d) * 60 / BLOCK + 1e-9), blocks = [], used = {}, topicsToday = {};
     var live = D.courses.filter(function (c) { return c.exam.date >= d; });
-    function push(b) { blocks.push(b); nb--; }
+    function push(b) { blocks.push(b); lastTouch[b.c] = dayIdx; nb--; }
     live.forEach(function (c) {
       var dl = diffDays(d, c.exam.date);
       if (dl === 0) { for (var i = 0; i < 2 && nb > 0; i++) push({ c: c.id, kind: 'review', t: null }); used[c.id] = (used[c.id] || 0) + 1; }
@@ -73,7 +78,9 @@ function buildPlan() {
       var best = null, bs = -1;
       live.forEach(function (c) {
         var sum = 0; if (c.topics.length) c.topics.forEach(function (t) { sum += sim[tkey(c, t)]; }); else sum = 6; /* placeholder weight until the course has content */
-        var sc = sum / Math.pow(diffDays(d, c.exam.date) + 0.5, 1.3) * Math.pow(0.78, used[c.id] || 0);
+        var urgency = sum / Math.pow(diffDays(d, c.exam.date) + 0.5, 1.3) * Math.pow(0.78, used[c.id] || 0);
+        var gap = dayIdx - lastTouch[c.id], neglect = gap > MAX_GAP ? Math.pow(gap - MAX_GAP, 2) * 0.08 : 0;
+        var sc = urgency + neglect;
         if (sc > bs) { bs = sc; best = c; }
       });
       used[best.id] = (used[best.id] || 0) + 1;
@@ -88,10 +95,20 @@ function buildPlan() {
   }
   return days;
 }
+function freshPlanBlocks() {
+  var p = buildPlan()[0];
+  return (p ? p.blocks : []).map(function (b) { b.done = false; return b; });
+}
+function carryForward(blocks) {
+  return (blocks || []).filter(function (b) { return !b.done; }).map(function (b) {
+    var x = {}; for (var k in b) x[k] = b[k]; x.carried = true; return x;
+  });
+}
 function todayBlocks() {
   var t = today(), h = hoursFor(t);
   if (!S.dayPlan || S.dayPlan.date !== t || S.dayPlan.hours !== h) {
-    var p = buildPlan()[0]; S.dayPlan = { date: t, hours: h, blocks: (p ? p.blocks : []).map(function (b) { b.done = false; return b; }) }; save();
+    var carry = S.dayPlan ? carryForward(S.dayPlan.blocks) : [];
+    S.dayPlan = { date: t, hours: h, blocks: carry.concat(freshPlanBlocks()) }; save();
   }
   return S.dayPlan.blocks;
 }
@@ -127,7 +144,7 @@ function viewToday() {
   if (!blocks.length) h += '<p class="mute">No study blocks today. Set hours in the Plan tab.</p>';
   blocks.forEach(function (b, i) {
     var c = D.course(b.c);
-    h += '<div class="blk' + (b.done ? ' done' : '') + '"><input type="checkbox" data-i="' + i + '"' + (b.done ? ' checked' : '') + ' aria-label="done"><div class="grow nm">' + dot(c) + '<a href="' + blockHref(b) + '">' + esc(blockLabel(b)) + '</a><div class="mute">' + c.code + ' &middot; ' + BLOCK + ' min</div></div></div>';
+    h += '<div class="blk' + (b.done ? ' done' : '') + '"><input type="checkbox" data-i="' + i + '"' + (b.done ? ' checked' : '') + ' aria-label="done"><div class="grow nm">' + dot(c) + '<a href="' + blockHref(b) + '">' + esc(blockLabel(b)) + '</a>' + (b.carried ? ' <span class="tag">carried over</span>' : '') + '<div class="mute">' + c.code + ' &middot; ' + BLOCK + ' min</div></div></div>';
   });
   h += '</div>';
   var due = D.courses.reduce(function (n, c) { return n + (c.exam.date >= t ? dueCount(c) : 0); }, 0);
@@ -147,7 +164,12 @@ function viewToday() {
     });
   }
   app.innerHTML = h;
-  app.querySelector('#replan').onclick = function (e) { e.preventDefault(); S.dayPlan = null; save(); route(); };
+  app.querySelector('#replan').onclick = function (e) {
+    e.preventDefault();
+    var carry = S.dayPlan ? S.dayPlan.blocks.filter(function (b) { return b.carried; }) : [];
+    var t2 = today(); S.dayPlan = { date: t2, hours: hoursFor(t2), blocks: carry.concat(freshPlanBlocks()) };
+    save(); route();
+  };
   [].forEach.call(app.querySelectorAll('.blk input'), function (cb) { cb.onchange = function () { S.dayPlan.blocks[+cb.dataset.i].done = cb.checked; save(); route(); }; });
 }
 
@@ -228,14 +250,14 @@ function viewCards(cid, tid) {
     app.innerHTML = h; return;
   }
   var c = D.course(cid); if (!c) return viewCards();
-  var cards = allCards(c, tid);
+  var cards = allCards(c, tid === 'all' ? null : tid);
   if (!cards.length) { app.innerHTML = '<p><a href="#/cards">&larr; Flashcards</a></p><div class="card">No cards for ' + c.code + ' yet.</div>'; return; }
   if (!tid) {
     var h2 = '<p><a href="#/cards">&larr; Flashcards</a></p><h1>' + dot(c) + c.code + '</h1><p><a class="btn primary" href="#/cards/' + cid + '/all">Review everything due (' + dueCount(c) + ')</a></p><h2>By topic</h2>';
     c.topics.forEach(function (t) { if (t.cards.length) h2 += '<a class="card" href="#/cards/' + cid + '/' + t.id + '"><div class="row sp"><span>' + esc(t.name) + '</span><span class="tag">' + t.cards.filter(function (x) { return isDue(x.id); }).length + ' due / ' + t.cards.length + '</span></div></a>'; });
     app.innerHTML = h2; return;
   }
-  var pool = (tid === 'all' ? allCards(c) : cards);
+  var pool = cards;
   var queue = pool.filter(function (x) { return isDue(x.cd.id); }).slice(0, 25);
   if (!queue.length) queue = pool.slice().sort(function (a, b) { return ((S.cards[a.cd.id] || {}).d || '') < ((S.cards[b.cd.id] || {}).d || '') ? -1 : 1; }).slice(0, 10);
   var total = queue.length, done = 0;
