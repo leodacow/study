@@ -1,4 +1,4 @@
-# Automatic sync between phone and laptop (Google Drive)
+﻿# Automatic sync between phone and laptop (Google Drive)
 
 One-time setup, about 10 minutes, free. The app only gets access to a hidden file of its own in your Drive (scope `drive.appdata`). It cannot see your other files.
 

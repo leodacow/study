@@ -198,6 +198,10 @@ function viewTopic(cid, tid, tab) {
   h += '<p><a class="btn primary" id="gp" href="#/topic/' + cid + '/' + tid + '/practice">I\'ve read it &ndash; start practice</a></p>';
   app.innerHTML = h;
   S.seen[k] = true; save();
+  // if a slide image is not on the site (e.g. you chose not to upload the lecture images), just hide it
+  [].forEach.call(app.querySelectorAll('.gal img'), function (im) {
+    im.onerror = function () { var fg = im.closest('figure'), g = fg && fg.parentNode; if (fg) fg.remove(); if (g && !g.children.length) { var cd = g.closest('.card'); if (cd) cd.remove(); } };
+  });
   [].forEach.call(app.querySelectorAll('.gal figure'), function (f) {
     f.onclick = function () {
       var s = t.slides[+f.dataset.i], m = el('<div class="modal"><div><img src="' + s.src + '" alt="" style="max-width:100%;height:auto"><p class="mute">' + esc(s.cap || '') + '</p><button class="primary">Close</button></div></div>');
@@ -253,7 +257,9 @@ function viewCards(cid, tid) {
   show();
 }
 
+function refLabel(c) { return c.ref ? c.ref.label : (c.tTable ? 't-table' : ''); }
 function showTTable(c) {
+  if (c.ref) { var m0 = el('<div class="modal"><div><b>' + c.ref.title + '</b>' + c.ref.html + '<p><button class="primary" id="cl">Close</button></p></div></div>'); document.body.appendChild(m0); m0.querySelector('#cl').onclick = function () { m0.remove(); }; m0.onclick = function (e) { if (e.target === m0) m0.remove(); }; return; }
   if (!c.tTable) return;
   var tt = c.tTable, h = '<div class="modal"><div><b>t-table (given in the exam)</b><p class="mute">Row = df, column = P(T ≤ t*). Bottom row = standard normal.</p><table class="tt"><tr><th>df</th>' + tt.cols.map(function (x) { return '<th>' + x + '</th>'; }).join('') + '</tr>';
   Object.keys(tt.rows).forEach(function (r) { h += '<tr><th>' + r + '</th>' + tt.rows[r].map(function (v) { return '<td>' + v + '</td>'; }).join('') + '</tr>'; });
@@ -272,7 +278,7 @@ function practice(c, t, box) {
       box.innerHTML = '<div class="card"><h2>Session done</h2><p>This round: ' + got.toFixed(1).replace('.0', '') + ' / ' + qs.length + '.</p><p>Topic level now: <span class="tag ' + lv.k + '">' + lv.t + '</span> (' + Math.round((m || 0) * 100) + '%)</p><p><a class="btn primary" href="#/">Back to today</a> <a class="btn" href="#/course/' + c.id + '">Course topics</a></p></div>';
       return;
     }
-    var q = qs[i], h = '<div class="card"><div class="row sp"><span class="mute">Question ' + (i + 1) + ' of ' + qs.length + (q.marks ? ' &middot; ' + q.marks + ' mark' + (q.marks > 1 ? 's' : '') : '') + '</span>' + (c.tTable ? '<button class="sm" id="tt">t-table</button>' : '') + '</div>' + (q.src && q.src !== 'Practice' ? '<span class="tag">Past paper: ' + esc(q.src) + '</span>' : '') + '<p class="q">' + q.q + '</p>';
+    var q = qs[i], h = '<div class="card"><div class="row sp"><span class="mute">Question ' + (i + 1) + ' of ' + qs.length + (q.marks ? ' &middot; ' + q.marks + ' mark' + (q.marks > 1 ? 's' : '') : '') + '</span>' + (refLabel(c) ? '<button class="sm" id="tt">' + refLabel(c) + '</button>' : '') + '</div>' + (q.src && q.src !== 'Practice' ? '<span class="tag">Past paper: ' + esc(q.src) + '</span>' : '') + '<p class="q">' + q.q + '</p>';
     if (q.type === 'mcq') {
       h += q.opts.map(function (o, n) { return '<button class="opt" data-n="' + n + '">' + o + '</button>'; }).join('') + '<div id="fb"></div></div>';
       box.innerHTML = h;
@@ -323,7 +329,7 @@ function viewPlan() {
 
 /* ---------- mock exam ---------- */
 function paperQs(c, p) {
-  var out = []; c.topics.forEach(function (t) { t.questions.forEach(function (q) { if (q.paper === p.id) out.push(q); }); });
+  var out = []; c.topics.forEach(function (t) { t.questions.forEach(function (q) { if (q.paper === p.id || (Array.isArray(q.paper) && q.paper.indexOf(p.id) >= 0)) out.push(q); }); });
   return out.sort(function (a, b) { return a.order - b.order; });
 }
 function viewMock(cid, pid) {
@@ -347,7 +353,7 @@ function viewMock(cid, pid) {
   function clock(sec) { return Math.floor(sec / 60) + ':' + ('0' + (sec % 60)).slice(-2); }
   function run(label, sec, onEnd, showQs) {
     var left = sec;
-    app.innerHTML = head + '<div class="card row sp"><div><div class="mute">' + label + '</div><div class="timer" id="tm">' + clock(left) + '</div></div><div><button id="sk" class="primary">' + (showQs ? 'Start writing now' : 'Finish &amp; mark') + '</button></div></div>' + (c.tTable ? '<p><button class="sm" id="tt">Show t-table</button></p>' : '') + qhtml(!showQs);
+    app.innerHTML = head + '<div class="card row sp"><div><div class="mute">' + label + '</div><div class="timer" id="tm">' + clock(left) + '</div></div><div><button id="sk" class="primary">' + (showQs ? 'Start writing now' : 'Finish &amp; mark') + '</button></div></div>' + (refLabel(c) ? '<p><button class="sm" id="tt">Show ' + refLabel(c) + '</button></p>' : '') + qhtml(!showQs);
     if (showQs) [].forEach.call(app.querySelectorAll('textarea'), function (x) { x.disabled = true; });
     var tb = app.querySelector('#tt'); if (tb) tb.onclick = function () { showTTable(c); };
     function end() { clearInterval(timer); onEnd(); }
@@ -405,7 +411,9 @@ function viewSheet(cid) {
 
 /* ---------- optional Google Drive sync (hidden app-data file, only this app can see it) ---------- */
 var GS = { id: '', tok: null, exp: 0, fid: null, on: false, msg: '' }, gTimer = null;
-try { GS.id = localStorage.getItem('sg:gcid') || ''; GS.on = localStorage.getItem('sg:gon') === '1'; } catch (e) {}
+var DEFAULT_GCID = '1017727895826-67k5omcj94fpmnnfdtc1kq03km9r94lv.apps.googleusercontent.com'; // OAuth client IDs are public identifiers (not secrets)
+GS.id = DEFAULT_GCID;
+try { GS.id = localStorage.getItem('sg:gcid') || DEFAULT_GCID; GS.on = localStorage.getItem('sg:gon') === '1'; } catch (e) {}
 function gLoadLib(cb) {
   if (window.google && google.accounts) return cb();
   var s = document.createElement('script'); s.src = 'https://accounts.google.com/gsi/client'; s.onload = cb; s.onerror = function () { GS.msg = 'Could not load Google sign-in (offline?)'; gStatus(); };
@@ -497,4 +505,5 @@ window.addEventListener('hashchange', route);
 route();
 if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) navigator.serviceWorker.register('sw.js').catch(function () {});
 })();
+
 

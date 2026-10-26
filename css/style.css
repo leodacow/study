@@ -49,5 +49,5 @@ table.tt td,table.tt th{text-align:right;padding:3px 6px}
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:8px}.gal figure{margin:0;cursor:zoom-in}.gal img{width:100%;height:auto;border:1px solid var(--line);border-radius:8px;background:#fff}.gal figcaption{font-size:.78rem;color:var(--mute)}
 .fc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:220px}.fcq{font-size:1.25rem;font-weight:600;margin:10px 0}.fcb{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:1.1rem}
 [hidden]{display:none!important}
-.lesson img,.card img.fig{max-width:100%;height:auto}
+.lesson img,.card img.fig{max-width:100%;height:auto}.card img.fig{display:block;margin:8px 0;background:#fff;border-radius:6px}
 @media print{body{background:#fff;padding:0}nav#nav,.noprint{display:none!important}main{max-width:none;padding:0}.a4{width:190mm;height:277mm;aspect-ratio:auto;border:0;font-size:9pt}}

@@ -1,4 +1,5 @@
-/* STAT2201 - built from the 2023a, 2025a (Sem 1) and 2025b (Sem 2) final exams, the 2026 cover/formula page and Problem Set 2026b. */
+/* STAT2201 - built from the 2023a, 2023b, 2024a (Sem 1), Sem 2 2024, 2025a (Sem 1) and 2025b (Sem 2) final exams, the 2026 cover/formula page and Problem Set 2026b.
+   Every number checked against the official handwritten solutions (and re-derived with python) for 2023b, 2024a and Sem 2 2024. Lecturer flagged the two-sample comparison-of-means test as certain to appear. */
 DATA.add({
   id: 'STAT2201', code: 'STAT2201', name: 'Analysis of Engineering and Scientific Data', color: '#3b82f6',
   summary: 'How to describe data, estimate things with uncertainty, compare groups and fit regression lines. The exam is mostly "interpret this output and explain what it means".',
@@ -30,6 +31,9 @@ DATA.add({
   papers: [
     { id: '2025b', name: 'Semester 2, 2025 paper', fullMarks: 40, fullMin: 60, note: 'Parts that need a printed graph are left out.' },
     { id: '2025a', name: 'Semester 1, 2025 paper', fullMarks: 30, fullMin: 60, note: 'Parts that need a printed graph are left out.' },
+    { id: '2024b', name: 'Semester 2, 2024 paper', fullMarks: 30, fullMin: 60, note: 'Parts that need a printed box plot or residual plot are left out.' },
+    { id: '2024a', name: 'Semester 1, 2024 paper', fullMarks: 35, fullMin: 60, note: 'Parts that need a printed box plot or residual plot are left out.' },
+    { id: '2023b', name: 'Semester 2, 2023 paper', fullMarks: 35, fullMin: 60, note: 'Parts that need a printed box plot or residual plot are left out.' },
     { id: '2023a', name: 'Semester 1, 2023 paper', fullMarks: 35, fullMin: 60, note: 'Parts that need a printed graph are left out. Duration assumed to be 60 min.' }
   ],
   topics: [
@@ -72,7 +76,17 @@ DATA.add({
         { type: 'work', marks: 3, src: 'Practice',
           q: 'A sample has Q1 = 12 and Q3 = 20, with smallest value 2 and largest value 41. Is the largest value an outlier? What about the smallest?',
           steps: ['IQR = 20 − 12 = 8, so 1.5×IQR = 12.', 'Lower fence = 12 − 12 = 0. Upper fence = 20 + 12 = 32.', '41 &gt; 32, so 41 <b>is an outlier</b>. 2 &gt; 0 so the smallest value is fine.'],
-          ans: '41 is an outlier; 2 is not.' }
+          ans: '41 is an outlier; 2 is not.' },
+        { type: 'work', marks: 4, paper: '2023b', order: 1.1, src: 'Sem 2 2023, Q1(a)(b)',
+          q: 'Box plots of static coefficient of friction at four temperatures (22°C, 50°C, 100°C, 160°C) are shown; the 22°C box runs from about 0.06 to 0.10 with the median line near 0.085.<br>(a) State approximate values for the median and IQR at 22°C. (2 marks)<br>(b) Briefly describe the relationship between friction and temperature. (2 marks)',
+          steps: ['(a) Median ≈ 0.085. IQR = Q3 − Q1 ≈ 0.10 − 0.06 = <b>0.04</b>.', '(b) The relationship is <b>non-linear</b>: median friction first decreases with temperature (22°C → 100°C) then increases again (100°C → 160°C).'], ans: 'Median ≈ 0.085, IQR ≈ 0.04; non-linear (decreases then increases).' },
+        { type: 'mcq', q: 'In a box plot a correlation of r = −0.08 is quoted as proof of "no relationship", but the median clearly dips then rises across groups. What is wrong with that reasoning?', opts: ['r is never trustworthy', 'r only measures straight-line association and misses the non-linear (curved) pattern', 'The sample must be too small', 'Box plots cannot show medians'], a: 1, why: 'Exactly the 2023b Q1(c) trap: r ≈ 0 only rules out a linear trend, not a curved one.' },
+        { type: 'work', marks: 3, paper: '2024a', order: 1.1, src: 'Sem 1 2024, Q1(a)(b)',
+          q: 'Box plots compare the proportion of ice cleared (tenths) by Cadets vs Seafarers. For Seafarers, the box runs about 1.2 to 1.9 with median near 1.7; Cadets have a wider, lower box.<br>(a) State the approximate median and IQR for Seafarers. (2 marks)<br>(b) Briefly describe the relationship between ice cleared and experience. (2 marks)',
+          steps: ['(a) Median ≈ 1.7 tenths. IQR = Q3 − Q1 ≈ 1.9 − 1.2 = <b>0.7</b> tenths.', '(b) The median proportion of ice cleared <b>increases</b> with officer experience, and the spread (IQR) <b>decreases</b> with experience (seafarers are more consistent).'], ans: 'Median ≈ 1.7, IQR ≈ 0.7 tenths; higher and less variable with more experience.' },
+        { type: 'work', marks: 4, paper: '2024b', order: 1.1, src: 'Sem 2 2024, Q1',
+          q: 'Box plots compare CAD-model correctness for Proficient (n=9) vs Expert (n=10) designers. Proficient: box from about 0.84 to 0.92, median around 0.87. Expert: box from about 0.91 to 1.00, median around 0.94, with no whisker on the right.<br>(a) Briefly describe the relationship between experience and correctness. (2 marks)<br>(b) State the approximate IQR for Proficient. (1 mark)<br>(c) Why is the Expert box plot missing its right-hand whisker? (1 mark)',
+          steps: ['(a) Median correctness <b>increases</b> with experience; the spread (IQR) looks similar for both groups (doesn’t clearly change).', '(b) IQR ≈ 0.92 − 0.84 = <b>0.08</b>.', '(c) The <b>maximum value is 1.00, which coincides with Q3</b>, so there is no gap above the box for a whisker to be drawn.'], ans: 'Correctness rises with experience, similar spread; IQR ≈ 0.08; no whisker because the max equals Q3 (ceiling at 1.0).' }
       ] },
 
     /* ---------------------------------------------------------------- 2 */
@@ -90,7 +104,10 @@ DATA.add({
 <h4>Prediction interval (PI)</h4>
 <p>A PI covers where <b>one new observation</b> is likely to fall: <b>ȳ ± t* × s√(1 + 1/n)</b>. It is always wider than the CI (it includes the spread of individual values), and it does not shrink to zero as n grows. This formula is <b>not on the formula sheet</b>, so put it on your A4 sheet.</p>
 <h4>What makes it wider or narrower</h4>
-<p>Wider: larger s, higher confidence. Narrower: larger n (width goes with 1/√n, so 4× the data halves the width).</p>`,
+<p>Wider: larger s, higher confidence. Narrower: larger n (width goes with 1/√n, so 4× the data halves the width).</p>
+<h4>Two other shapes, same recipe</h4>
+<ul><li><b>Paired / single-sample difference</b> (e.g. "increase from before to after"): treat the n <i>differences</i> as your data. ȳ and s are the mean and sd of the differences, df = n − 1. Same formula, ȳ<sub>diff</sub> ± t* × s<sub>diff</sub>/√n.</li>
+<li><b>Difference of two means μ₁ − μ₂</b> (independent samples): estimate ȳ₁ − ȳ₂, se = √(s₁²/n₁ + s₂²/n₂), df = min(n₁ − 1, n₂ − 1) — the same se and df as the two-sample t-test.</li></ul>`,
       example: { q: 'n = 20, ȳ = 648, s = 84. 95% CI for the mean.',
         steps: ['se = 84/√20 = 18.78. df = 19. t* (col 0.975, df 19) = 2.093.', 'Margin = 2.093 × 18.78 = 39.3.', 'CI = 648 ± 39.3 = <b>(608.7, 687.3) MPa</b>.'] },
       formulas: ['CI for mean: ȳ ± t* · s/√n, df = n − 1', '95% CI uses table column 0.975 (90%: 0.95, 99%: 0.995)', 'Prediction interval: ȳ ± t* · s·√(1 + 1/n)'],
@@ -116,7 +133,17 @@ DATA.add({
         { type: 'work', marks: 3, src: 'Practice',
           q: 'n = 25, ȳ = 50.2, s = 4.0. Find a 99% confidence interval for the mean.',
           hint: '99% means column 0.995; df = 24.',
-          steps: ['se = 4/√25 = 0.8. t* (df 24, col 0.995) = 2.797.', 'Margin = 2.797 × 0.8 = 2.24.', 'CI = 50.2 ± 2.24 = (47.96, 52.44).'], ans: '(47.96, 52.44).' }
+          steps: ['se = 4/√25 = 0.8. t* (df 24, col 0.995) = 2.797.', 'Margin = 2.797 × 0.8 = 2.24.', 'CI = 50.2 ± 2.24 = (47.96, 52.44).'], ans: '(47.96, 52.44).' },
+        { type: 'work', marks: 4, paper: '2023b', order: 1.4, src: 'Sem 2 2023, Q1(d)',
+          q: 'Friction tests: 22°C has n=15, ȳ=0.082, s=0.032; 50°C has n=14, ȳ=0.048, s=0.020. Construct a 95% confidence interval for the difference in mean friction between 22°C and 50°C.',
+          steps: ['ȳ<sub>22</sub> − ȳ<sub>50</sub> = 0.082 − 0.048 = 0.034.', 'se = √(0.032²/15 + 0.020²/14) = 0.00984.', 'df = min(14, 13) = 13; t* (col 0.975) = 2.160. Margin = 2.160 × 0.00984 = 0.0213.', '<b>CI = 0.034 ± 0.0213 = (0.0127, 0.0553)</b>.'], ans: '0.034 ± 0.021 (i.e. about 0.013 to 0.055)' },
+        { type: 'work', marks: 3, paper: '2024a', order: 1.4, src: 'Sem 1 2024, Q1(d)',
+          q: 'The 18 cadets’ proportion of ice cleared increased by an average of 0.7 (tenths) with sd 0.4 (tenths) from moderate to high ice concentration (a paired comparison). Construct a 90% CI for the expected increase.',
+          hint: 'This is a single-sample CI on the 18 "increase" values: df = 17.',
+          steps: ['se = 0.4/√18 = 0.0943; df = 17; t* (col 0.95) = 1.740.', 'Margin = 1.740 × 0.0943 = 0.164.', '<b>CI = 0.7 ± 0.164 (tenths)</b>.'], ans: '0.7 ± 0.16 tenths' },
+        { type: 'work', marks: 3, paper: '2024b', order: 2.1, src: 'Sem 2 2024, Q2(a)',
+          q: 'return B (solar units willing to buy): n = 52, ȳ = 1.95, s = 2.02. Construct a 90% confidence interval for the expected number of units under return B.',
+          steps: ['se = 2.02/√52 = 0.280; df = 51; t* (col 0.95) ≈ 1.675.', 'Margin = 1.675 × 0.280 = 0.469.', '<b>CI = 1.95 ± 0.469 (units)</b>.'], ans: '1.95 ± 0.47 units' }
       ] },
 
     /* ---------------------------------------------------------------- 3 */
@@ -135,7 +162,11 @@ DATA.add({
 <h4>P-value scale (formula sheet)</h4>
 <ul><li>p &lt; 0.01 strong evidence against H₀</li><li>0.01 – 0.05 moderate</li><li>0.05 – 0.1 weak</li><li>&gt; 0.1 inconclusive</li></ul>
 <p>Never say "H₀ is true". Say "<i>no evidence of a difference</i>" or "<i>inconclusive</i>". A p-value is the probability of seeing a result at least this extreme <b>if H₀ were true</b>.</p>
-<p>Always finish with a sentence in context: "There is moderate evidence that the expected yield strength differs between print orientations."</p>`,
+<p>Always finish with a sentence in context: "There is moderate evidence that the expected yield strength differs between print orientations."</p>
+<h4>One-sample or paired version (same recipe, simpler se)</h4>
+<p>If you only have one group — or one set of "before/after" differences per unit — H₀: μ = μ₀ (often 0), t = (ȳ − μ₀)/(s/√n), df = n − 1. Everything else (P-value bracketing, conclusion wording) is identical.</p>
+<h4>One-sided tests</h4>
+<p>The question says something directional, e.g. "is greater for the more experienced officers": H₁: μ₁ &gt; μ₂ (not ≠). The P-value is <b>not doubled</b>: bracket t between two table columns directly (watch the sign of t matches the direction in H₁).</p>`,
       example: { q: 'Group A: n=20, ȳ=648, s=84. Group B: n=18, ȳ=713, s=65. Test for a difference.',
         steps: ['H₀: μ_A = μ_B vs H₁: μ_A ≠ μ_B.', 'se = √(84²/20 + 65²/18) = √(352.8 + 234.5) = 24.24. t = (648 − 713)/24.24 = −2.68.', 'df = min(19, 17) = 17. Row 17: 2.567 (0.99), 2.898 (0.995).', 'One-sided p between 0.005 and 0.01, so two-sided p between 0.01 and 0.02: <b>moderate evidence</b> of a difference.'] },
       formulas: ['t = (ȳ₁ − ȳ₂) / √(s₁²/n₁ + s₂²/n₂), df = min(n₁−1, n₂−1)', 'Two-sided p = 2 × one-sided p. Bracket |t| between two table columns', 'p &lt;0.01 strong; 0.01-0.05 moderate; 0.05-0.1 weak; &gt;0.1 inconclusive', 'H₀: μ₁ − μ₂ = 0, H₁: μ₁ − μ₂ ≠ 0'],
@@ -155,7 +186,18 @@ DATA.add({
         { type: 'work', marks: 6, paper: '2023a', order: 2.1, src: 'Sem 1 2023, Q2(a)',
           q: 'Fixation force (N) of a New suture anchor (n = 5, mean 195.5, s = 14.0) versus the Standard one (n = 7, mean 139.2, s = 62.5). Does the data provide evidence of a difference in expected fixation force? State hypotheses, bound the P-value and conclude.',
           steps: ['H₀: μ_new = μ_std, H₁: μ_new ≠ μ_std.', 'se = √(14²/5 + 62.5²/7) = √(39.2 + 558.0) = 24.44.', 't = (195.5 − 139.2)/24.44 = 2.30. df = min(4, 6) = 4.', 'Row 4: 2.132 (col 0.95), 2.776 (col 0.975). One-sided p in (0.025, 0.05); <b>two-sided P between 0.05 and 0.10</b>.', 'Weak evidence of a difference (new anchor appears stronger, but with tiny samples we cannot be sure).'],
-          ans: 'P between 0.05 and 0.1: weak evidence.' }
+          ans: 'P between 0.05 and 0.1: weak evidence.' },
+        { type: 'work', marks: 5, paper: '2023b', order: 2.1, src: 'Sem 2 2023, Q2(a)',
+          q: 'The average difference in read distance (Horizontal − Vertical) from 30 tags was 0.473 cm, sample sd 0.653 cm. Is there evidence of a difference in expected read distance between orientations? State hypotheses, bound the P-value and conclude.',
+          hint: 'This is a single-sample test on the 30 paired differences, H₀: μ_diff = 0.',
+          steps: ['H₀: μ = 0, H₁: μ ≠ 0 (μ = expected difference Horizontal − Vertical).', 't = (0.473 − 0)/(0.653/√30) = 0.473/0.1192 = 3.97. df = 29.', 'Row 29: P(T &gt; 3.659) = 0.0005 (col 0.9995) and P(T &gt; 4.254) = 0.0001 (col 0.9999). Since 3.659 &lt; 3.97 &lt; 4.254, the one-sided p is between 0.0001 and 0.0005, so <b>two-sided P is between 0.0002 and 0.001</b>.', 'Strong evidence against H₀: the expected read distance differs between orientations.'], ans: 'P between 0.0002 and 0.001: strong evidence of a difference.' },
+        { type: 'work', marks: 6, paper: '2024a', order: 1.3, src: 'Sem 1 2024, Q1(c)',
+          q: 'Cadets (n=18, ȳ=1.0, s=0.6) vs Seafarers (n=16, ȳ=1.6, s=0.5) proportion of ice cleared. Does the data provide evidence the expected proportion is <u>greater</u> for the more experienced officers? State hypotheses, bound the P-value, conclude.',
+          hint: 'One-sided: H₁: μ_seafarer &gt; μ_cadet.',
+          steps: ['H₀: μ_C = μ_S, H₁: μ_C &lt; μ_S (i.e. seafarers higher).', 'se = √(0.5²/16 + 0.6²/18) = 0.1887.', 't = (1.6 − 1.0)/0.1887 = 3.18 (testing ȳ_S − ȳ_C). df = min(17, 15) = 15.', 'Row 15: 2.947 (col 0.995), 3.733 (col 0.999). t = 3.18 is between → <b>one-sided P between 0.001 and 0.005</b> (no doubling, since H₁ is one-sided).', 'Strong evidence against H₀: the expected proportion of ice cleared is greater for more experienced officers.'], ans: 'P between 0.001 and 0.005: strong evidence (one-sided).' },
+        { type: 'work', marks: 5, paper: '2024b', order: 2.4, src: 'Sem 2 2024, Q2(d)',
+          q: 'return A: n=44, ȳ=1.60, s=1.79. return B: n=52, ȳ=1.95, s=2.02. Do the data provide evidence of a difference in expected willingness to buy between the two forms of return? State hypotheses, bound the P-value, conclude.',
+          steps: ['H₀: μ_A = μ_B, H₁: μ_A ≠ μ_B.', 'se = √(1.79²/44 + 2.02²/52) = 0.389.', 't = (1.60 − 1.95)/0.389 = −0.90. df = min(43, 51) = 43.', 'Row 43 (nearby rows): P(T &gt; 0.680) ≈ 0.25, P(T &gt; 1.302) ≈ 0.10 → one-sided p in (0.10, 0.25), <b>two-sided P between 0.2 and 0.5</b>.', 'Inconclusive: no real evidence of a difference between the two return forms.'], ans: 'P between 0.2 and 0.5: inconclusive.' }
       ] },
 
     /* ---------------------------------------------------------------- 4 */
@@ -189,7 +231,22 @@ DATA.add({
           steps: ['Any two of: small sample size (low power), large variability in the data, the true difference is small.'], ans: 'e.g. small samples and high variability.' },
         { type: 'work', marks: 2, paper: '2025b', order: 1.6, src: 'Sem 2 2025, Q1(f)',
           q: 'Suppose the yield strengths are decided to be non-normal in each print orientation (n = 20 and 18). How does this affect the CI (part c), the PI (part d) and the t-test (part e)? Justify.',
-          steps: ['The CI and t-test are for means. With n of about 20 the CLT gives approximately normal sample means, so they are still approximately valid (unless the data is very skewed or has extreme outliers).', 'The prediction interval is for an individual bar and relies directly on normality of the data, so it is <b>not</b> valid.'], ans: 'CI and test approx OK (CLT); PI invalid.' }
+          steps: ['The CI and t-test are for means. With n of about 20 the CLT gives approximately normal sample means, so they are still approximately valid (unless the data is very skewed or has extreme outliers).', 'The prediction interval is for an individual bar and relies directly on normality of the data, so it is <b>not</b> valid.'], ans: 'CI and test approx OK (CLT); PI invalid.' },
+        { type: 'work', marks: 2, paper: '2023b', order: 2.2, src: 'Sem 2 2023, Q2(b)',
+          q: 'In the RFID tag study, researchers already randomised the order in which tags were tested. How else should they have used randomisation? What issue does it help avoid?',
+          steps: ['The <b>order of the two orientations tested on each tag</b> should also be randomised (e.g. flip a coin per tag to decide whether Horizontal or Vertical is measured first).', 'This helps avoid <b>confounding orientation with order</b> (e.g. the antenna or tag warming up, or measurement drift over the session).'], ans: 'Randomise which orientation is tested first per tag; avoids confounding orientation with order.' },
+        { type: 'work', marks: 1, paper: '2024a', order: 1.5, src: 'Sem 1 2024, Q1(e)',
+          q: 'A critic says the high-vs-moderate ice comparison was biased by a learning effect (cadets got better with practice by the second test). How could the study have avoided this criticism?',
+          steps: ['Randomise, for each cadet, <b>which ice concentration is tested first</b> (e.g. flip a coin), so every cadet has an equal chance of meeting the moderate or high condition first — this stops practice/learning from being confounded with concentration.'], ans: 'Randomise the order of the two conditions per cadet.' },
+        { type: 'work', marks: 1, paper: '2024b', order: 2.3, src: 'Sem 2 2024, Q2(c)',
+          q: 'Each participant is shown only one form of return (A or B). How should participants be allocated to the two forms so a difference can be attributed to the form of return?',
+          steps: ['Allocate participants to return A or B <b>at random</b> (e.g. flip a coin for each participant), so other factors average out between groups and cannot be confounded with the form of return.'], ans: 'Random allocation of participants to return A or B.' },
+        { type: 'work', marks: 1, paper: '2024b', order: 2.2, src: 'Sem 2 2024, Q2(b)',
+          q: 'Responses are integers (not normal) and somewhat right-skewed with no obvious outliers, n = 44 and 52. Why are the normal-based CI and test still valid here?',
+          steps: ['With moderate skew and no outliers, a sample size of around 40+ is enough for the <b>Central Limit Theorem</b> to make the sampling distribution of the mean approximately normal, so inference based on the normal/t distribution is still approximately valid.'], ans: 'n ≈ 40+ with no extreme skew/outliers: CLT makes the sample mean approx normal.' },
+        { type: 'work', marks: 1, paper: '2024b', order: 3.6, src: 'Sem 2 2024, Q3(f)',
+          q: 'Why is the normality assumption important for a prediction interval, and why doesn’t the CLT let us relax it the way it does for a confidence interval?',
+          steps: ['A PI must cover one <b>future individual observation</b>, not an average.', 'The CLT is about averages becoming normal as n grows — it says nothing about a single new observation, whose distribution is unaffected by sample size. So the PI needs the errors themselves to be normal.'], ans: 'PI covers one future value; CLT only helps averages, not individual observations.' }
       ] },
 
     /* ---------------------------------------------------------------- 5 */
@@ -246,7 +303,25 @@ DATA.add({
         { type: 'work', marks: 2, paper: '2023a', order: 3.4, src: 'Sem 1 2023, Q3(d)',
           q: 'The Vc coefficient is −5.6713 with std err 1.587. The model has 13 residual degrees of freedom. Construct a 90% CI.',
           hint: '90% CI → column 0.95.',
-          steps: ['t* (df 13, col 0.95) = 1.771.', 'Margin = 1.771 × 1.587 = 2.81.', 'CI = −5.6713 ± 2.81 = (−8.48, −2.86).'], ans: '(−8.48, −2.86)' }
+          steps: ['t* (df 13, col 0.95) = 1.771.', 'Margin = 1.771 × 1.587 = 2.81.', 'CI = −5.6713 ± 2.81 = (−8.48, −2.86).'], ans: '(−8.48, −2.86)' },
+        { type: 'work', marks: 2, paper: '2023b', order: 3.1, src: 'Sem 2 2023, Q3(a)(b)',
+          q: 'Hall-Petch model: Stress ~ Grain<sup>−1/2</sup>, fitted with 54 residual df, Intercept coef 446.2480.<br>(a) How many observations are in the data set? (1 mark)<br>(b) Briefly interpret 446.2480. (1 mark)',
+          steps: ['(a) df = n − (p + 1) = n − 2 → <b>n = 54 + 2 = 56</b>.', '(b) As grain size d → ∞, 1/√d → 0, so the estimated expected initial yield point <b>approaches 446.25 MPa</b> (the stress with an infinitely large grain).'], ans: 'n = 56; intercept = the limiting expected stress as grain size → ∞.' },
+        { type: 'work', marks: 2, paper: '2023b', order: 3.4, src: 'Sem 2 2023, Q3(d)',
+          q: 'Intercept coef 446.2480, std err 10.977, df 54. Construct a 90% CI for the intercept.',
+          steps: ['t* (df 54, col 0.95) = 1.674.', 'Margin = 1.674 × 10.977 = 18.37.', '<b>CI = 446.248 ± 18.37 MPa</b>.'], ans: '446.25 ± 18.37 MPa' },
+        { type: 'work', marks: 2, paper: '2024a', order: 2.1, src: 'Sem 1 2024, Q2(a)(b)',
+          q: 'Model: Annoyance ~ Loud + Impulsive (n=50). Loud coef 0.0612 (sone), Intercept 0.7546.<br>(a) Briefly interpret 0.0612. (1 mark)<br>(b) Briefly interpret 0.7546. (1 mark)',
+          steps: ['(a) Holding impulsiveness fixed, a 1 sone increase in loudness is associated with a <b>0.0612 increase</b> in the expected annoyance score.', '(b) The estimated expected annoyance is <b>0.7546</b> when loudness = 0 sone and impulsiveness = 0 IU (the intercept, often outside the real data range).'], ans: '+0.0612 annoyance per sone (impulsiveness fixed); 0.7546 = fitted value at Loud=0, Impulsive=0.' },
+        { type: 'work', marks: 2, paper: '2024a', order: 2.5, src: 'Sem 1 2024, Q2(e)(f)',
+          q: 'In the same model, P&gt;|t| for the Intercept is 0.207.<br>(a) State H₀ for that row and what you conclude. (2 marks)<br>(b) Construct a 99% CI for the Loud coefficient (coef 0.0612, std err 0.004, df 47). (2 marks)',
+          steps: ['(a) H₀: β₀ = 0 (the true intercept is 0). P = 0.207 &gt; 0.1: <b>inconclusive</b> — no real evidence the intercept differs from 0.', '(b) t* (df 47, col 0.995) = 2.685. Margin = 2.685 × 0.004 = 0.0107.', '<b>CI = 0.0612 ± 0.0107</b> (annoyance per sone).'], ans: 'Inconclusive for intercept; Loud coefficient CI = 0.0612 ± 0.011' },
+        { type: 'work', marks: 1, paper: '2024b', order: 3.1, src: 'Sem 2 2024, Q3(a)',
+          q: 'Model: Time ~ log2(Density) + log2(Retention). The Retention coefficient is −14.881. Briefly interpret it (recall log2(ab) = log2 a + log2 b).',
+          steps: ['<b>Doubling</b> the CCA retention (holding density fixed) is associated with a <b>decrease of 14.881 minutes</b> in the expected time to maximum smouldering mass loss rate.'], ans: 'Doubling retention → −14.88 min expected time, density fixed.' },
+        { type: 'work', marks: 2, paper: '2024b', order: 3.4, src: 'Sem 2 2024, Q3(d)',
+          q: 'The log2(Retention) coefficient is −14.881 with std err 2.221, df 18. Construct a 99% CI.',
+          steps: ['t* (df 18, col 0.995) = 2.878. Margin = 2.878 × 2.221 = 6.39.', '<b>CI = −14.881 ± 6.39</b>.'], ans: '−14.88 ± 6.39' }
       ] },
 
     /* ---------------------------------------------------------------- 6 */
@@ -285,7 +360,16 @@ DATA.add({
           steps: ['Normal Q-Q plot of the residuals: if the points fall roughly on the straight line the residuals are approximately normal; curved or S-shaped patterns or points far off the line indicate non-normality.', '(Alternatives: histogram of residuals; residuals vs order for independence.)'], ans: 'e.g. Q-Q plot: straight line means normal.' },
         { type: 'work', marks: 3, src: 'Practice',
           q: 'You fit a regression and the residual-vs-fitted plot shows a clear curve. The Q-Q plot looks fine. Which assumptions are OK / violated, and what would you do?',
-          steps: ['The curve means linearity is violated (the straight-line mean is wrong).', 'The Q-Q plot looks fine so normality is OK. Constant variance cannot be judged until the curve is fixed, and independence needs the data-collection details.', 'Fix: add a quadratic term (as in the honing example) or transform variables, then re-check.'], ans: 'Linearity fails; add a quadratic or transform.' }
+          steps: ['The curve means linearity is violated (the straight-line mean is wrong).', 'The Q-Q plot looks fine so normality is OK. Constant variance cannot be judged until the curve is fixed, and independence needs the data-collection details.', 'Fix: add a quadratic term (as in the honing example) or transform variables, then re-check.'], ans: 'Linearity fails; add a quadratic or transform.' },
+        { type: 'work', marks: 3, paper: '2023b', order: 3.3, src: 'Sem 2 2023, Q3(c)',
+          q: 'Independence cannot be judged from residuals-vs-fitted and Q-Q plots. State the other assumptions of the linear regression model and comment on their validity: the residuals-vs-fitted plot shows a random scatter with even spread, and the Q-Q plot is close to the line but with slightly light tails.',
+          steps: ['<b>Linearity</b>: no systematic trend in residuals vs fitted → appears satisfied.', '<b>Constant variance</b>: the spread of residuals looks constant across fitted values → appears satisfied.', '<b>Normality</b>: the Q-Q plot roughly follows the line → appears satisfied (the slightly light tails are a minor departure, not a concern).'], ans: 'Linearity, constant variance and normality all appear satisfied.' },
+        { type: 'work', marks: 3, paper: '2024a', order: 2.3, src: 'Sem 1 2024, Q2(c)(d)',
+          q: 'Residuals vs Loudness and vs Impulsiveness are plotted. Both show roughly even scatter around 0 with no trend, except the spread of residuals is visibly smaller for Impulsiveness &gt; 1 than below 1.<br>(a) Comment on linearity and constant variance. (2 marks)<br>(b) Suggest one other diagnostic plot. (1 mark)',
+          steps: ['(a) <b>Linearity</b> looks fine (no trend in either plot). <b>Constant variance looks violated</b>: the residual spread shrinks for Impulsiveness &gt; 1, so the error variance is not constant.', '(b) A <b>normal Q-Q plot of the residuals</b> (or residuals vs fitted values, or residuals vs order).'], ans: 'Linearity OK; constant variance violated (smaller spread at Impulsive>1); suggest a Q-Q plot.' },
+        { type: 'work', marks: 3, paper: '2024b', order: 3.2, src: 'Sem 2 2024, Q3(b)(c)',
+          q: 'In the CCA smouldering model: (b) what does model.scale = 40.832 represent? (1 mark) (c) Residuals vs fitted show no trend and constant spread; the Q-Q plot is close to a straight line. Comment on the model assumptions. (3 marks)',
+          steps: ['(b) model.scale is <b>σ̂², the estimated variance of the error/noise term</b> in the model.', '(c) No trend in residuals vs fitted → <b>linearity</b> holds. Constant spread → <b>constant variance</b> holds. Q-Q plot close to the line → <b>normality</b> holds. (Independence cannot be checked from these plots.)'], ans: 'scale = estimated error variance; linearity, constant variance and normality all look satisfied.' }
       ] },
 
     /* ---------------------------------------------------------------- 7 */
@@ -313,7 +397,17 @@ DATA.add({
           steps: ['(i) The midpoint of the mean CI: (22.4586 + 25.1338)/2 ≈ <b>23.80</b> (also (15.7802 + 31.8122)/2).', '(ii) Yes, approximately valid: with n = 81 the CLT makes the estimated mean (and coefficient estimates) approximately normal, so inference about the average response is still reasonable.', '(iii) No. The prediction interval is for a single observation and depends directly on the errors being normal; there is no averaging.'], ans: '(i) 23.80; (ii) approx valid by CLT; (iii) invalid.' },
         { type: 'work', marks: 2, src: 'Practice',
           q: 'Using logW = 2.1515 + 0.7480 logS + 0.8096 logF, predict the expected logW for logS = 1.2 and logF = 0.4.',
-          steps: ['2.1515 + 0.7480(1.2) + 0.8096(0.4) = 2.1515 + 0.8976 + 0.3238 = 3.373.'], ans: '≈ 3.373' }
+          steps: ['2.1515 + 0.7480(1.2) + 0.8096(0.4) = 2.1515 + 0.8976 + 0.3238 = 3.373.'], ans: '≈ 3.373' },
+        { type: 'work', marks: 3, paper: '2023b', order: 3.5, src: 'Sem 2 2023, Q3(e)',
+          q: 'Hall-Petch model: Intercept 446.2480, slope (Grain⁻¹ᐟ²) 58.3907, model.scale (σ̂²) 723.266. For Grain = 0.03 mm: mean = 776.079 to 790.655 is the 95% CI for the mean, and mean_se = 3.635. Determine a 95% prediction interval for the initial yield point at this grain size.',
+          hint: 'PI uses se_pred = √(σ̂² + mean_se²), not just mean_se.',
+          steps: ['Point prediction: 446.2480 + 58.3907/√0.03 = <b>783.37 MPa</b> (midpoint of the given mean CI too).', 'se_pred = √(723.266 + 3.635²) = √(723.266 + 13.21) = 27.14.', 't* (df 54, col 0.975) = 2.005. Margin = 2.005 × 27.14 = 54.4.', '<b>PI = 783.37 ± 54.4 MPa</b>.'], ans: '783.37 ± 54.4 MPa' },
+        { type: 'work', marks: 2, paper: '2024a', order: 2.7, src: 'Sem 1 2024, Q2(g)',
+          q: 'Model: Annoyance = 0.7546 + 0.0612 Loud + 1.3737 Impulsive (df 47). At Loud=70, Impulsive=0.9, mean_se = 0.1222. Determine a 95% CONFIDENCE interval (not prediction) for the expected annoyance.',
+          steps: ['Point estimate: 0.7546 + 0.0612(70) + 1.3737(0.9) = <b>6.275</b>.', 't* (df 47, col 0.975) = 2.012. Margin = 2.012 × 0.1222 = 0.246.', '<b>CI = 6.275 ± 0.246</b> (this is narrower than a PI would be, since it is only about the average annoyance, not one new sample).'], ans: '6.275 ± 0.246' },
+        { type: 'work', marks: 2, paper: '2024b', order: 3.5, src: 'Sem 2 2024, Q3(e)',
+          q: 'Model: Time = −121.876 + 18.141 log₂(Density) − 14.881 log₂(Retention), σ̂² = 40.832, df 18. At Density=500, Retention=1.0, mean_se = 1.622. Determine a 95% PREDICTION interval for the time to maximum smouldering mass loss rate.',
+          steps: ['log₂(500) = 8.966, log₂(1.0) = 0. Mean = −121.876 + 18.141(8.966) − 14.881(0) = <b>40.77 min</b>.', 'se_pred = √(40.832 + 1.622²) = √(43.46) = 6.59.', 't* (df 18, col 0.975) = 2.101. Margin = 2.101 × 6.59 = 13.85.', '<b>PI = 40.77 ± 13.85 min</b>.'], ans: '40.77 ± 13.85 minutes' }
       ] },
 
     /* ---------------------------------------------------------------- 8 */
@@ -333,7 +427,8 @@ DATA.add({
 <li><b>"Find the constant c so θ̂ is unbiased"</b>: compute E(θ̂) in terms of c, set it equal to θ and solve.</li>
 <li><b>"Find the MSE"</b>: (bias is 0) so work out Var(θ̂) using the variance rule.</li>
 <li><b>"Which n, m is best"</b>: write the MSE as a function of n and m, substitute m = total − n, then try each whole number.</li>
-<li><b>"Find E(T)"</b> from a pdf: E(T) = ∫ t f(t) dt. Use the formula: ∫₀^∞ t·e^(−at/λ) dt = λ²/a².</li></ol>`,
+<li><b>"Find E(T)"</b> from a pdf: E(T) = ∫ t f(t) dt. Use the formula: ∫₀^∞ t·e^(−at/λ) dt = λ²/a².</li>
+<li><b>"Build a CI for the parameter from the estimator"</b> (when θ̂ is unbiased with a known variance, but not simply a sample mean): use the CLT shortcut <b>(θ̂ − θ)/se(θ̂) ≈ N(0,1)</b>, write 0.95 ≈ P(−1.96 ≤ (θ̂−θ)/se ≤ 1.96), then rearrange for θ. If se(θ̂) involves θ itself (e.g. se = θ/√n), the algebra ends with θ between <b>θ̂/(1 + 1.96/√n)</b> and <b>θ̂/(1 − 1.96/√n)</b> — expect to flip an inequality when you divide by a negative or invert.</li></ol>`,
       example: { q: 'X₁,…,Xₙ iid with mean μ and variance σ². Show X̄ is unbiased for μ and find its MSE.',
         steps: ['E(X̄) = (1/n)ΣE(Xᵢ) = (1/n)(nμ) = μ so it is unbiased.', 'Var(X̄) = (1/n²)ΣVar(Xᵢ) = σ²/n. Unbiased so MSE = σ²/n.'] },
       formulas: ['bias = E(θ̂) − θ; MSE = bias² + Var(θ̂)', 'E(aX+bY) = aEX + bEY; independent: Var(aX+bY) = a²VarX + b²VarY', 'iid: E(X̄) = μ, Var(X̄) = σ²/n', '∫₀^∞ t e^(−at/λ) dt = λ²/a²;  ∫₀^∞ u e^(−u) du = 1'],
@@ -366,7 +461,23 @@ DATA.add({
           steps: ['Var(Yᵢ/xᵢ) = Var(Yᵢ)/xᵢ² = xᵢ²/xᵢ² = 1.', 'Var(β̂) = n⁻²·n·1 = 1/n.', 'se(β̂) = 1/√n.'], ans: 'se = 1/√n' },
         { type: 'work', marks: 1, paper: '2023a', order: 4.3, src: 'Sem 1 2023, Q4(c)',
           q: 'What is the distribution of β̂ (same set-up)?',
-          steps: ['β̂ is a linear combination of independent normal random variables, so it is normal: β̂ ~ N(β, 1/n).'], ans: 'N(β, 1/n)' }
+          steps: ['β̂ is a linear combination of independent normal random variables, so it is normal: β̂ ~ N(β, 1/n).'], ans: 'N(β, 1/n)' },
+        { type: 'work', marks: 9, paper: '2023b', order: 4.1, src: 'Sem 2 2023, Q4',
+          q: 'File size pdf f(y;λ) = 3λ³(y+λ)⁻⁴, y ≥ 0. Y₁,…,Yₙ iid; estimator λ̂_c = (c/n)ΣYᵢ.<br>(a) Show λ̂_c is unbiased when c = 2. (5 marks)<br>(b) Given Var(Yᵢ) = ¾λ², find the c that minimises the MSE of λ̂_c. (4 marks)',
+          hint: 'E(Y) = ∫₀^∞ y·3λ³(y+λ)⁻⁴ dy; split 3λ³(y+λ)⁻⁴y = 3λ³(y+λ)⁻³ − 3λ⁴(y+λ)⁻⁴ using y = (y+λ) − λ.',
+          steps: ['(a) E(Y) = 3λ³∫(y+λ)⁻³dy − 3λ⁴∫(y+λ)⁻⁴dy = 3λ³·λ⁻²/2 − 3λ⁴·λ⁻³/3 = 1.5λ − λ = <b>λ/2</b>.', 'E(λ̂_c) = c·E(Y) = c·λ/2. With c = 2: E(λ̂_2) = λ. <b>Unbiased.</b>', '(b) bias(λ̂_c) = (c/2 − 1)λ. Var(λ̂_c) = c²Var(Y)/n = (3/4)c²λ²/n.', 'MSE = λ²(c²/4 − c + 1) + (3/4n)c²λ² = λ²[c²(1/4 + 3/(4n)) − c + 1], a quadratic in c.', 'Minimise: c* = 1/(2(1/4 + 3/(4n))) = <b>2n/(n+3)</b>.'], ans: 'Unbiased at c=2; MSE-minimising c* = 2n/(n+3)' },
+        { type: 'work', marks: 6, paper: '2024a', order: 3.1, src: 'Sem 1 2024, Q3(a)(b)',
+          q: 'Packet inter-arrival pdf f(t;b) = (1/(2b√t))exp(−√t/b), t &gt; 0. T₁,…,Tₙ iid; estimator b̂ = (1/n)Σ√Tᵢ.<br>(a) Show b̂ is unbiased for b. [Hint: ∫₀^∞ u·e⁻ᵘ du = 1.] (3 marks)<br>(b) Given E(Tᵢ) = 2b², show Var(b̂) = b²/n. (3 marks)',
+          hint: 'For (a) substitute u = √t/b. For (b), √T has mean b and E[(√T)²]=E(T)=2b².',
+          steps: ['(a) E(b̂) = E(√T). Substitute u = √t/b (t = b²u², dt = 2b²u du): E√T = ∫₀^∞ √t·(1/(2b√t))e^(−√t/b) dt = ∫₀^∞ (1/2b)e⁻ᵘ·2b²u du = b∫₀^∞ u e⁻ᵘ du = <b>b</b>. So E(b̂) = b: unbiased.', '(b) Let W = √T. Var(W) = E(W²) − (EW)² = E(T) − b² = 2b² − b² = b².', 'Var(b̂) = Var((1/n)ΣWᵢ) = (1/n²)·n·Var(W) = Var(W)/n = <b>b²/n</b>.'], ans: 'E(b̂)=b (unbiased); Var(b̂) = b²/n' },
+        { type: 'work', marks: 4, paper: '2024a', order: 3.3, src: 'Sem 1 2024, Q3(c)',
+          q: 'Using Var(b̂) = b²/n from the previous part, apply the CLT to b̂ to construct an approximate 95% CI for b.',
+          hint: 'se(b̂) = b/√n depends on the unknown b itself — solve the inequality for b rather than just writing b̂ ± 1.96se.',
+          steps: ['By the CLT, (b̂ − b)/(b/√n) ≈ N(0,1), so 0.95 ≈ P(−1.96 ≤ (b̂−b)√n/b ≤ 1.96).', 'Rearrange: −1.96/√n ≤ b̂/b − 1 ≤ 1.96/√n → 1 − 1.96/√n ≤ b̂/b ≤ 1 + 1.96/√n.', 'Flip (take reciprocals, all terms positive) and multiply by b̂:', '<b>95% CI for b: [ b̂/(1 + 1.96/√n), b̂/(1 − 1.96/√n) ]</b>.'], ans: '[b̂/(1+1.96/√n), b̂/(1−1.96/√n)]' },
+        { type: 'work', marks: 6, paper: '2024b', order: 4.1, src: 'Sem 2 2024, Q4',
+          q: 'Y₁,…,Yₙ independent with E(Yᵢ) = μ, Var(Yᵢ) = 1/xᵢ (xᵢ &gt; 0 known constants). Estimator μ̂ = (1/c(x))Σxᵢ Yᵢ.<br>(a) Find c(x₁,…,xₙ) so μ̂ is unbiased. (3 marks)<br>(b) Find the MSE of μ̂. (3 marks)',
+          hint: 'E(Σxᵢ Yᵢ) = μΣxᵢ. For the variance, Var(xᵢYᵢ) = xᵢ²Var(Yᵢ) = xᵢ²/xᵢ = xᵢ.',
+          steps: ['(a) E(μ̂) = (1/c)Σxᵢ E(Yᵢ) = (μ/c)Σxᵢ. Unbiased needs this to equal μ, so <b>c(x) = Σxᵢ</b>.', '(b) Unbiased, so MSE = Var(μ̂) = (1/C²)Σxᵢ²Var(Yᵢ) = (1/C²)Σxᵢ²(1/xᵢ) = (1/C²)Σxᵢ = C/C² = <b>1/Σxᵢ</b>.'], ans: 'c = Σxᵢ; MSE(μ̂) = 1/Σxᵢ' }
       ] },
 
     /* ---------------------------------------------------------------- 9 */
